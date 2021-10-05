@@ -55,7 +55,12 @@ def userShell():
 def info():
     """Display information about the existing installation"""
     click.echo(f"Info...")
-    subprocess.Popen(['uname', '-a'])
+    uname = subprocess.Popen(['uname', '-a'], stdout=subprocess.PIPE).communicate()[0].decode("UTF-8")
+    ubuntuRelease = subprocess.Popen(['lsb_release', '-r'], stdout=subprocess.PIPE).communicate()[0].decode("UTF-8")
+    numberCores = subprocess.Popen(['nproc', '--all'], stdout=subprocess.PIPE).communicate()[0].decode("UTF-8")
+    click.echo(f"System: {uname}")
+    click.echo(f"Ubuntu {ubuntuRelease}")
+    click.echo(f"Number cores: {numberCores}")
 
 cli.add_command(hello)
 cli.add_command(init)
