@@ -1,6 +1,10 @@
 import click
 import subprocess
 
+def getCommandOutput(commandArray):
+    output = subprocess.Popen(commandArray, stdout=subprocess.PIPE).communicate()[0].decode("UTF-8")
+    return output
+
 @click.group()
 def cli():
     pass
@@ -55,9 +59,9 @@ def userShell():
 def info():
     """Display information about the existing installation"""
     click.echo(f"Info...")
-    uname = subprocess.Popen(['uname', '-a'], stdout=subprocess.PIPE).communicate()[0].decode("UTF-8")
-    ubuntuRelease = subprocess.Popen(['lsb_release', '-r'], stdout=subprocess.PIPE).communicate()[0].decode("UTF-8")
-    numberCores = subprocess.Popen(['nproc', '--all'], stdout=subprocess.PIPE).communicate()[0].decode("UTF-8")
+    uname = getCommandOutput(['uname', '-a'])
+    ubuntuRelease = getCommandOutput(['lsb_release', '-r'])
+    numberCores = getCommandOutput(['nproc', '--all'])
     click.echo(f"System: {uname}")
     click.echo(f"Ubuntu {ubuntuRelease}")
     click.echo(f"Number cores: {numberCores}")
