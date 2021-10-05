@@ -13,15 +13,6 @@ def cli():
     pass
 
 @click.command()
-@click.option("--count", default=1, help="Number of greetings.")
-@click.option("--name", prompt="Your name", help="The person to greet.")
-
-def hello(count, name):
-    """Simple program that greets NAME for a total of COUNT times."""
-    for _ in range(count):
-        click.echo(f"Hello, {name}!")
-
-@click.command()
 def init():
     """Initialization of the DB and required configurations"""
     click.echo(f"Initialization...")
@@ -74,7 +65,6 @@ def info():
     click.echo(f"Ubuntu {ubuntuRelease}")
     click.echo(f"Number cores: {numberCores}")
 
-cli.add_command(hello)
 cli.add_command(init)
 cli.add_command(backup)
 cli.add_command(upgrade)
