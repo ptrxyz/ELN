@@ -2,8 +2,12 @@ import click
 import subprocess
 
 def getCommandOutput(commandArray):
-    output = subprocess.Popen(commandArray, stdout=subprocess.PIPE).communicate()[0].decode("UTF-8")
-    return output
+    process = subprocess.Popen(commandArray, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    output = process.communicate()
+    returnCode = process.returncode
+    stdout = output[0].decode("UTF-8")
+    stderr = output[1].decode("UTF-8")
+    return stdout, stderr, returnCode
 
 def runShellScript(commandArray):
     subprocess.Popen(commandArray)
@@ -58,12 +62,14 @@ def userShell():
 def info():
     """Display information about the existing installation"""
     click.echo(f"Info...")
-    uname = getCommandOutput(['uname', '-a'])
-    ubuntuRelease = getCommandOutput(['lsb_release', '-r'])
-    numberCores = getCommandOutput(['nproc', '--all'])
+    uname = getCommandOutput(['uname', '-a'])[0]
+    ubuntuRelease = getCommandOutput(['lsb_release', '-r'])[0]
+    numberCores, errorInfo, returnCode = getCommandOutput(['nproc', '--all'])
     click.echo(f"System: {uname}")
     click.echo(f"Ubuntu {ubuntuRelease}")
     click.echo(f"Number cores: {numberCores}")
+    click.echo(f"Error info of nproc --all: {errorInfo}\n")
+    click.echo(f"Return code of nproc --all: {returnCode}")
 
 cli.add_command(init)
 cli.add_command(backup)
