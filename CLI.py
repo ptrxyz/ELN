@@ -6,7 +6,7 @@ def getCommandOutput(commandArray):
     return output
 
 def runShellScript(commandArray):
-    subprocess.Popen(commandArray, shell=True)
+    subprocess.Popen(commandArray)
 
 @click.group()
 def cli():
