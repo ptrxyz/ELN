@@ -32,22 +32,26 @@ def init():
 def backup(destination):
     """Backup the existing DB, data and configurations to a given DESTINATION"""
     click.echo(f"Backup to {destination}")
+    runShellScript(["./backupScript.sh"])
 
 @click.command()
 @click.option("--version", default="1.0", help="Target version for the upgrade.")
 def upgrade(version):
     """Upgrade an existing ELN installation to a desired VERSION"""
     click.echo(f"Upgrading to version {version}")
+    runShellScript(["./upgradeScript.sh"])
     
 @click.command()
 def startEln():
     """Start ELN"""
     click.echo(f"Start ELN...")
+    runShellScript(["./startELNscript.sh"])
     
 @click.command()
 def startWorker():
     """Start worker"""
     click.echo(f"Start worker...")
+    runShellScript(["./startWorkerScript.sh"])
     
 @click.command()
 def shell():

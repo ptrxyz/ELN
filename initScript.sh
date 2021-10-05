@@ -1,1 +1,1 @@
-echo test
+echo Running the init script 
