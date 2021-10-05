@@ -5,6 +5,9 @@ def getCommandOutput(commandArray):
     output = subprocess.Popen(commandArray, stdout=subprocess.PIPE).communicate()[0].decode("UTF-8")
     return output
 
+def runShellScript(commandArray):
+    subprocess.Popen(commandArray, shell=True)
+
 @click.group()
 def cli():
     pass
@@ -22,6 +25,7 @@ def hello(count, name):
 def init():
     """Initialization of the DB and required configurations"""
     click.echo(f"Initialization...")
+    runShellScript(["./initScript.sh"])
 
 @click.command()
 @click.option("--destination", help="Destination path for the backup.")
