@@ -23,7 +23,7 @@ def cli():
 def init():
     """Initialization of the DB and required configurations"""
     click.echo(f"Initialization...")
-    runShellScript(["./initScript.sh"])
+    runShellScript(["/shared/initScript.sh"])
 
 @click.command()
 @click.option("--destination", help="Destination path for the backup.")
@@ -66,7 +66,7 @@ def info():
     """Display information about the existing installation"""
     click.echo(f"Info...")
     uname = getCommandOutput(['uname', '-a'])
-    ubuntuRelease = getCommandOutput(['lsb_release', '-r'])
+    ubuntuRelease = "lsb_release needs to many dependencies" # getCommandOutput(['lsb_release', '-r'])
     numberCores, errorInfo, returnCode = getCommandOutput(['nproc', '--all'], False)
     click.echo(f"System: {uname}")
     click.echo(f"Ubuntu {ubuntuRelease}")
