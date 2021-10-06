@@ -15,6 +15,16 @@ def getCommandOutput(commandArray, suppressErrors=True):
 def runShellScript(commandArray):
     subprocess.Popen(commandArray)
 
+def getUbuntuVersion():
+    ubuntuRelease = ""
+    for line in open("/etc/lsb-release"):
+        line = line.strip()
+        var, arg = line.split('=', 1)
+        if var.startswith('DISTRIB_RELEASE'):
+            ubuntuRelease = arg
+
+    return ubuntuRelease
+
 @click.group()
 def cli():
     pass
@@ -66,7 +76,7 @@ def info():
     """Display information about the existing installation"""
     click.echo(f"Info...")
     uname = getCommandOutput(['uname', '-a'])
-    ubuntuRelease = "lsb_release needs to many dependencies" # getCommandOutput(['lsb_release', '-r'])
+    ubuntuRelease = getUbuntuVersion()
     numberCores, errorInfo, returnCode = getCommandOutput(['nproc', '--all'], False)
     click.echo(f"System: {uname}")
     click.echo(f"Ubuntu {ubuntuRelease}")
