@@ -1,7 +1,7 @@
 #!/bin/bash
 
 case "$1" in
-    shell)
+    bash)
         exec /bin/bash
         ;;
     *)

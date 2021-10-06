@@ -1,5 +1,6 @@
 import click
 import subprocess
+import pty
 
 def getCommandOutput(commandArray, suppressErrors=True):
     process = subprocess.Popen(commandArray, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -13,7 +14,7 @@ def getCommandOutput(commandArray, suppressErrors=True):
         return stdout, stderr, returnCode
 
 def runShellScript(commandArray):
-    subprocess.Popen(commandArray)
+    subprocess.call(commandArray)
 
 def getUbuntuVersion():
     ubuntuRelease = ""
@@ -65,11 +66,13 @@ def startWorker():
 def shell():
     """Open a root shell"""
     click.echo(f"Root shell...")
+    pty.spawn("/bin/bash")
     
 @click.command()
 def userShell():
     """Open a user shell"""
     click.echo(f"User shell...")
+ #   pty.spawn("sudo -E -H -u ${PROD} bash -c '. $HOME/.profile; ' /bin/bash")
     
 @click.command()
 def info():
