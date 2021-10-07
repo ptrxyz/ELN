@@ -1,36 +1,63 @@
 #!/bin/bash
-echo Running the init script 
 
-# check accessibility of shared folder
+checkFolderExists(){
+    if [[ ! -d $1 ]]; then
+        echo "    Folder $1 does not exist. Please create it."
+        return 1
+    else
+        echo "    Found folder $1."
+        return 0
+    fi
+}
+
+checkFolderIsWritable(){
+    if [[ ! -w $1 ]]; then
+        echo "    Folder $1 has no write permission. Please grant it."
+        return 1
+    else
+        echo "    Folder $1 has write permission."
+        return 0
+    fi
+}
+
+echo "---- Init script ----"
+
+echo "Checks for the file system:"
+# check accessibility of shared folders
 if ! mount | grep 'on /shared' 2>&1 1>/dev/null; then
-    echo The shared folder is not correctly connected as volume. Please make sure that a folder _shared_ is available next to the docker-compose.yml file.
+    echo "    The shared folder is not correctly connected as volume. Please make sure that a folder /shared is available next to the docker-compose.yml file."
+    exit 1
+else
+    echo "    Found folder /shared."
 fi
 
-[[ ! -d "/shared/eln" ]] && echo Folder /shared/eln does not exist. Please create it.
-[[ ! -d "/shared/eln/config" ]] && echo Folder /shared/eln/config does not exist. Please create it.
-[[ ! -d "/shared/eln/log" ]] && echo Folder /shared/eln/log does not exist. Please create it.
-[[ ! -d "/shared/eln/public" ]] && echo Folder /shared/eln/public does not exist. Please create it.
-[[ ! -d "/shared/eln/tmp" ]] && echo Folder /shared/eln/tmp does not exist. Please create it.
-[[ ! -d "/shared/eln/uploads" ]] && echo Folder /shared/eln/uploads does not exist. Please create it.
+if ! checkFolderExists "/shared/eln"        ; then exit 1; fi
+if ! checkFolderExists "/shared/eln/config" ; then exit 1; fi
+if ! checkFolderExists "/shared/eln/log"    ; then exit 1; fi
+if ! checkFolderExists "/shared/eln/public" ; then exit 1; fi
+if ! checkFolderExists "/shared/eln/tmp"    ; then exit 1; fi
+if ! checkFolderExists "/shared/eln/uploads"; then exit 1; fi
 
 # check write permissions in folder
-[[ ! -w "/shared/eln" ]] && echo Folder /shared/eln has no write access. Please grant it.
-[[ ! -w "/shared/eln/config" ]] && echo Folder /shared/eln/config has no write access. Please grant it.
-[[ ! -w "/shared/eln/log" ]] && echo Folder /shared/eln/log has no write access. Please grant it.
-[[ ! -w "/shared/eln/public" ]] && echo Folder /shared/eln/public has no write access. Please grant it.
-[[ ! -w "/shared/eln/tmp" ]] && echo Folder /shared/eln/tmp has no write access. Please grant it.
-[[ ! -w "/shared/eln/uploads" ]] && echo Folder /shared/eln/uploads has no write access. Please grant it.
-
+if ! checkFolderIsWritable "/shared/eln"        ; then exit 1; fi
+if ! checkFolderIsWritable "/shared/eln/config" ; then exit 1; fi
+if ! checkFolderIsWritable "/shared/eln/log"    ; then exit 1; fi
+if ! checkFolderIsWritable "/shared/eln/public" ; then exit 1; fi
+if ! checkFolderIsWritable "/shared/eln/tmp"    ; then exit 1; fi
+if ! checkFolderIsWritable "/shared/eln/uploads"; then exit 1; fi
 
 # check existance of certain files?
 # copy files - still needed with new Dockerfile?
 
-# check accessibility of DB - OK
+echo "Checks for the database:"
+# check accessibility of DB:
 # simply waits for the DB to be up and done booting
 while ! pg_isready -h db 1>/dev/null 2>&1; do
     echo "Database not ready. Waiting ..."
     sleep 10
 done
+
+echo "Database up and ready."
 
 # check correct setup of the DB
 # initialize DB
