@@ -51,13 +51,49 @@ if ! checkFolderIsWritable "/shared/eln/uploads"; then exit 1; fi
 
 echo "Checks for the database:"
 # check accessibility of DB:
+db_name="chemotion"
+db_role="chemotion"
+db_password="PleaseChangeThePassword"
+db_host="db"
+db_port="5432"
 # simply waits for the DB to be up and done booting
-while ! pg_isready -h db 1>/dev/null 2>&1; do
-    echo "Database not ready. Waiting ..."
+while ! pg_isready -h $db_host 1>/dev/null 2>&1; do
+    echo "    Database instance not ready. Waiting ..."
     sleep 10
 done
+echo "    Database instance ready."
 
-echo "Database up and ready."
+echo "    Creating database"
+if ! (echo "\q" | psql -d $db_name -h $db_host -U $db_role 2>/dev/null); then
+    echo "    Can not connect to database or database needs to be initialized."
+    # if [[ "x${CREATE_USER}" == x"yes" || x"${INITIALIZE}" == x"yes" ]]; then
+    psql --host="$db_host" --username 'postgres' -c "
+        DROP DATABASE IF EXISTS $db_name;"
+    psql --host="$db_host" --username 'postgres' -c "
+        DROP ROLE IF EXISTS $db_role;
+        CREATE ROLE $db_role LOGIN CREATEDB NOSUPERUSER PASSWORD '$db_password';"
+    psql --host="$db_host" --username 'postgres' -c "            
+        CREATE DATABASE $db_name OWNER $db_role;
+    " || {
+        echo "    Could not create database. PSQL returned [$?]."
+        exit 1
+    }
+    psql --host="$db_host" --username="$db_role" -c "
+        CREATE EXTENSION IF NOT EXISTS \"pg_trgm\";
+        CREATE EXTENSION IF NOT EXISTS \"hstore\";
+        CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";
+        ALTER USER $db_role PASSWORD '$db_password';
+    " || {
+        echo "    Failed to set password for database user. PSQL returned [$?]."
+        exit 1
+    }
+    # else
+    #     echo "Could not connect to database. Make sure to specify connection parameters using DB_HOST, DB_ROLE, DB_NAME, DB_PW."
+    #     exit 1
+    # fi
+fi
+
+echo "    Database up and running."
 
 # check correct setup of the DB
 # initialize DB
