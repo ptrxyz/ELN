@@ -63,15 +63,20 @@ while ! pg_isready -h $db_host 1>/dev/null 2>&1; do
 done
 echo "    Database instance ready."
 
-echo "    Creating database"
+# check correct setup of the DB and initialize DB
+echo "    Creating database ..."
 if ! (echo "\q" | psql -d $db_name -h $db_host -U $db_role 2>/dev/null); then
     echo "    Can not connect to database or database needs to be initialized."
     # if [[ "x${CREATE_USER}" == x"yes" || x"${INITIALIZE}" == x"yes" ]]; then
+    echo "    Dropping database $db_name it it exists ..."
     psql --host="$db_host" --username 'postgres' -c "
         DROP DATABASE IF EXISTS $db_name;"
+    echo "    Dropping role $db_role if it exists ..."
+    echo "    Creating role $db_role with password $db_password ..."
     psql --host="$db_host" --username 'postgres' -c "
         DROP ROLE IF EXISTS $db_role;
         CREATE ROLE $db_role LOGIN CREATEDB NOSUPERUSER PASSWORD '$db_password';"
+    echo "    Creating database $db_name for owner $db_owner ..."
     psql --host="$db_host" --username 'postgres' -c "            
         CREATE DATABASE $db_name OWNER $db_role;
     " || {
@@ -95,19 +100,14 @@ fi
 
 echo "    Database up and running."
 
-# check correct setup of the DB
-# initialize DB
+
 
 # block PubChem
+echo "127.0.0.1    pubchem.ncbi.nlm.nih.gov" >> /etc/hosts
+
 # initialialize ELN
-# unblock PubChem
-
-
-# export INITIALIZE=yes
-# waitForDB
-# execute "${INIT_BASE}/init-scripts/library/shared-storage-init.sh"
-# execute "${INIT_BASE}/init-scripts/library/db-init.sh"
-# [[ "$1" == "dev" ]] && execute "${INIT_BASE}/init-scripts/library/patch4dev.sh"
-# execute "${INIT_BASE}/init-scripts/library/block-pubchem.sh"
 # execute "${INIT_BASE}/init-scripts/library/eln-init.sh"
-# execute "${INIT_BASE}/init-scripts/library/unblock-pubchem.sh"
+
+# unblock PubChem
+# do not use -i here. Docker prevents it from working...
+sed '/pubchem.ncbi.nlm.nih.gov/d' /etc/hosts > /etc/hosts
