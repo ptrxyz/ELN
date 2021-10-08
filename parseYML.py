@@ -1,5 +1,5 @@
 import click
-# import yaml
+import yaml
 
 @click.group()
 def cli():
@@ -12,6 +12,9 @@ def read(prefix, file):
     """Read entries from a YML file and add the given PREFIX"""
     click.echo(f"Reading file {file}")
     click.echo(f"Adding prefix {prefix}")
+    stream = open(file, "r")
+    fileContent = yaml.load(stream)
+    click.echo(fileContent)
 
 cli.add_command(read)
 
