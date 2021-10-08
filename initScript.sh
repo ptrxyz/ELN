@@ -103,6 +103,8 @@ echo "    Database up and running."
 
 
 # block PubChem
+echo "Database setup:"
+echo "    Blocking access to PubChem server..."
 echo "127.0.0.1    pubchem.ncbi.nlm.nih.gov" >> /etc/hosts
 
 # initialialize ELN
@@ -110,4 +112,5 @@ echo "127.0.0.1    pubchem.ncbi.nlm.nih.gov" >> /etc/hosts
 
 # unblock PubChem
 # do not use -i here. Docker prevents it from working...
+echo "    Unblocking access to PubChem server..."
 sed '/pubchem.ncbi.nlm.nih.gov/d' /etc/hosts > /etc/hosts
