@@ -2,17 +2,29 @@ version: '3'
 services:
     db:
         image: 'postgres:latest'
+        restart: unless-stopped
+        volumes:
+            - db_data:/var/lib/postgresql/data
         environment:
             - POSTGRES_HOST_AUTH_METHOD=trust
             - POSTGRES_USER=postgres
             - PSTGRES_PASSWORD=postgres
 
     eln:
-        build: .
+        build: 
+            context: .
+            dockerfile: Dockerfile
         depends_on:
             - db
+        environment:
+            - THOR_SILENCE_DEPRECATION=1
         volumes:
             - ./shared:/shared
-        expose:
-            - '4000'
-            - '4001'
+        network_mode: service:db
+#        expose:
+#            - '4000'
+#            - '4001'
+
+# Persist database information after container is removed
+volumes:
+    db_data:
