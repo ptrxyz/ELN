@@ -124,6 +124,11 @@ echo "    Database migrated."
 bundle exec rake db:seed
 echo "    Database seeded."
 
+echo "    Creating sprites..."
+bundle exec rake ketcherails:import:common_templates
+rm -rf /chemotion/app/app/public/images/ketcherails/icons/original/*
+bundle exec rails r 'MakeKetcherailsSprites.perform_now'
+
 # unblock PubChem
 # do not use -i here. Docker prevents it from working...
 echo "    Unblocking access to PubChem server..."
