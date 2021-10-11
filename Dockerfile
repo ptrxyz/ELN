@@ -21,7 +21,7 @@ RUN apt-get -y --autoremove --fix-missing install \
     libboost-system-dev \
     libeigen3-dev \
     libmagickcore-dev \    
-    python3-dev libsqlite3-dev libboost-all-dev
+    python3-dev libsqlite3-dev
 
 # install ruby
 RUN cd /tmp && \
@@ -78,6 +78,8 @@ RUN cd /src && yarn install --production --modules-folder /node/lib/node_modules
 # MAIN                                                                         #
 ################################################################################
 FROM ubuntu:21.04 AS main
+# set the shell. we need `[[` and `echo -e`...
+SHELL ["/bin/bash", "-c"]
 
 # set timezone
 ARG TZ=Europe/Berlin
@@ -85,6 +87,8 @@ RUN ln -s /usr/share/zoneinfo/${TZ} /etc/localtime
 
 # locales
 ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US.UTF-8
+ENV LC_ALL=en_US.UTF-8
 RUN echo -e "LANG=${LANG}\nLC_ALL=${LANG}" > /etc/locale.conf && \
     echo "${LANG} UTF-8" > /etc/locale.gen
 
@@ -98,6 +102,7 @@ RUN apt-get -y --autoremove --fix-missing install \
     inkscape `# this installs python3` \
     xvfb \
     imagemagick \
+    locales \
     tini
 
 RUN PANDOC_VERSION=2.10.1 && \
