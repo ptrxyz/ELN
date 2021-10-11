@@ -101,8 +101,6 @@ fi
 
 echo "    Database up and running."
 
-
-
 # block PubChem
 echo "Database setup:"
 echo "    Blocking access to PubChem server..."
@@ -110,6 +108,21 @@ echo "127.0.0.1    pubchem.ncbi.nlm.nih.gov" >> /etc/hosts
 
 # initialialize ELN
 # execute "${INIT_BASE}/init-scripts/library/eln-init.sh"
+cd /chemotion/app/
+
+SECRET_KEY="$(bundle exec rake secret)"
+cat <<EOF > config/secrets.yml
+production:
+  secret_key_base: $SECRET_KEY
+EOF
+
+echo "    Initializing database schemas..."
+bundle exec rake db:create
+echo "    Database created."
+bundle exec rake db:migrate
+echo "    Database migrated."
+bundle exec rake db:seed
+echo "    Database seeded."
 
 # unblock PubChem
 # do not use -i here. Docker prevents it from working...
