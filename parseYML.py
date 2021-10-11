@@ -15,23 +15,27 @@ def read(prefix, upper, file, keywords):
     """Read entries from a YML file and add the given PREFIX"""
     stream = open(file, "r")
     fileContent = yaml.safe_load(stream)
+
+    currentKeyword = ""
     for keyword in keywords.split("."):
-        if fileContent.get(keyword):
-            fileContent = fileContent[keyword]
+        if type(fileContent) is dict:
+            currentKeyword = keyword
+            if fileContent.get(keyword):
+                fileContent = fileContent[keyword]
 
     if type(fileContent) is dict:
         for item in fileContent:
             if type(item) is str:
                 if upper:
-                    click.echo(prefix + item.upper())
+                    click.echo(prefix + item.upper() + "=" + str(fileContent[item]))
                 else:
-                    click.echo(prefix + item)
+                    click.echo(prefix + item + "=" + str(fileContent[item]))
 
     else:
         if upper:
-            click.echo(prefix + fileContent.upper())
+            click.echo(prefix + currentKeyword.upper() + "=" + str(fileContent))
         else:
-            click.echo(prefix + fileContent)
+            click.echo(prefix + currentKeyword + "=" + str(fileContent))
 
 cli.add_command(read)
 
