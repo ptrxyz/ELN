@@ -16,26 +16,32 @@ def read(prefix, upper, file, keywords):
     stream = open(file, "r")
     fileContent = yaml.safe_load(stream)
 
+    notFound = False
     currentKeyword = ""
     for keyword in keywords.split("."):
         if type(fileContent) is dict:
             currentKeyword = keyword
             if fileContent.get(keyword):
                 fileContent = fileContent[keyword]
-
-    if type(fileContent) is dict:
-        for item in fileContent:
-            if type(item) is str:
-                if upper:
-                    click.echo(prefix + item.upper() + "=" + str(fileContent[item]))
-                else:
-                    click.echo(prefix + item + "=" + str(fileContent[item]))
-
-    else:
-        if upper:
-            click.echo(prefix + currentKeyword.upper() + "=" + str(fileContent))
+            else:
+                notFound = True
         else:
-            click.echo(prefix + currentKeyword + "=" + str(fileContent))
+            notFound = True
+
+    if not notFound:
+        if type(fileContent) is dict:
+            for item in fileContent:
+                if type(item) is str:
+                    if upper:
+                        click.echo(prefix + item.upper() + "=" + str(fileContent[item]))
+                    else:
+                        click.echo(prefix + item + "=" + str(fileContent[item]))
+
+        else:
+            if upper:
+                click.echo(prefix + currentKeyword.upper() + "=" + str(fileContent))
+            else:
+                click.echo(prefix + currentKeyword + "=" + str(fileContent))
 
 cli.add_command(read)
 
