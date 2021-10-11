@@ -12,7 +12,7 @@ def cli():
 @click.argument("file", nargs=1)
 @click.argument("keywords", nargs=1)
 def read(prefix, upper, file, keywords):
-    """Read entries from a YML file and add the given PREFIX"""
+    """Read KEYWORDS (in UPPER case) from a FILE and add the given PREFIX"""
     stream = open(file, "r")
     fileContent = yaml.safe_load(stream)
 
