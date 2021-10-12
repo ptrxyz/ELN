@@ -37,6 +37,12 @@ def init():
     runShellScript(["/shared/initScript.sh"])
 
 @click.command()
+@click.option("--name", default="default", help="Name of an existing landscape in /share/eln/")
+def landscape(name):
+    """Establish a configuration landscape for the ELN"""
+    click.echo(f"Form landscape: {name}")
+
+@click.command()
 @click.option("--destination", help="Destination path for the backup.")
 def backup(destination):
     """Backup the existing DB, data and configurations to a given DESTINATION"""
@@ -88,6 +94,7 @@ def info():
     click.echo(f"Return code of nproc --all: {returnCode}")
 
 cli.add_command(init)
+cli.add_command(landscape)
 cli.add_command(backup)
 cli.add_command(upgrade)
 cli.add_command(startEln)
