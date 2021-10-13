@@ -36,9 +36,13 @@ def init():
     click.echo(f"Initialization...")
     runShellScript(["/shared/initScript.sh"])
 
-@click.command()
-@click.option("--name", default="default", help="Name of an existing landscape in /share/eln/")
-def landscape(name):
+@click.group()
+def landscape():
+    pass
+
+@landscape.command()
+@click.option("--name", default="default", help="Name of an existing landscape in /share/landscapes/")
+def deploy(name):
     """Establish a configuration landscape for the ELN"""
     click.echo(f"Form landscape: {name}")
     runShellScript(["/shared/landscapeScript.sh", name])
