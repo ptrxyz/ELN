@@ -41,6 +41,7 @@ def init():
 def landscape(name):
     """Establish a configuration landscape for the ELN"""
     click.echo(f"Form landscape: {name}")
+    runShellScript(["/shared/landscapeScript.sh", name])
 
 @click.command()
 @click.option("--destination", help="Destination path for the backup.")

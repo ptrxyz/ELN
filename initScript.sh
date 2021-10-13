@@ -25,7 +25,7 @@ echo "---- Init script ----"
 echo "Checks for the file system:"
 # check accessibility of shared folders
 if ! mount | grep 'on /shared' 2>&1 1>/dev/null; then
-    echo "    The shared folder is not correctly connected as volume. Please make sure that a folder /shared is available next to the docker-compose.yml file."
+    echo "    The shared folder is not correctly connected as volume. Please make sure that a folder shared/ is available next to the docker-compose.yml file."
     exit 1
 else
     echo "    Found folder /shared."
@@ -51,13 +51,18 @@ if ! checkFolderIsWritable "/shared/eln/uploads"; then exit 1; fi
 
 echo "Checks for the database:"
 # check accessibility of DB:
-source <( python3 /shared/parseYML.py read --upper --prefix=DB_ /shared/eln/config/database.yml production )
+db_profile="production"
+db_configfile="/shared/eln/config/database.yml"
+source <( python3 /shared/parseYML.py read --upper --prefix=DB_ $db_configfile $db_profile )
 # db_name="chemotion"
 # db_role="chemotion"
 # db_password="PleaseChangeThePassword"
 # db_host="db"
 # db_port="5432"
 # simply waits for the DB to be up and done booting
+echo "    Evaluated configuration file: $db_configfile"
+echo "    Imported profile: $db_profile"
+echo "    Connecting to host: $DB_HOST ..."
 while ! pg_isready -h $DB_HOST 1>/dev/null 2>&1; do
     echo "    Database instance not ready. Waiting ..."
     sleep 10
