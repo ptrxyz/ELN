@@ -34,17 +34,19 @@ fi
 if ! checkFolderExists "/shared/landscapes/$1"        ; then exit 1; fi
 if ! checkFolderExists "/shared/landscapes/$1/config" ; then exit 1; fi
 # if ! checkFolderExists "/shared/landscapes/$1/log"    ; then exit 1; fi
-# if ! checkFolderExists "/shared/landscapes/$1/public" ; then exit 1; fi
+if ! checkFolderExists "/shared/landscapes/$1/public" ; then exit 1; fi
 # if ! checkFolderExists "/shared/landscapes/$1/tmp"    ; then exit 1; fi
 # if ! checkFolderExists "/shared/landscapes/$1/uploads"; then exit 1; fi
 
 # check write permissions in folder
-# if ! checkFolderIsWritable "/shared/landscapes/$1"        ; then exit 1; fi
-# if ! checkFolderIsWritable "/shared/landscapes/$1/config" ; then exit 1; fi
+if ! checkFolderIsWritable "/shared/landscapes/$1"        ; then exit 1; fi
+if ! checkFolderIsWritable "/shared/landscapes/$1/config" ; then exit 1; fi
 # if ! checkFolderIsWritable "/shared/landscapes/$1/log"    ; then exit 1; fi
-# if ! checkFolderIsWritable "/shared/landscapes/$1/public" ; then exit 1; fi
+if ! checkFolderIsWritable "/shared/landscapes/$1/public" ; then exit 1; fi
 # if ! checkFolderIsWritable "/shared/landscapes/$1/tmp"    ; then exit 1; fi
 # if ! checkFolderIsWritable "/shared/landscapes/$1/uploads"; then exit 1; fi
 
 echo "    Copying configuration files from landscape to setup ..."
 cp /shared/landscapes/$1/config/* /shared/eln/config/
+cp /shared/landscapes/$1/public/* /shared/eln/public/
+cp /shared/landscapes/$1/.env /shared/eln/
