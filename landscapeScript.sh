@@ -45,3 +45,6 @@ if ! checkFolderExists "/shared/landscapes/$1/config" ; then exit 1; fi
 # if ! checkFolderIsWritable "/shared/landscapes/$1/public" ; then exit 1; fi
 # if ! checkFolderIsWritable "/shared/landscapes/$1/tmp"    ; then exit 1; fi
 # if ! checkFolderIsWritable "/shared/landscapes/$1/uploads"; then exit 1; fi
+
+echo "    Copying configuration files from landscape to setup ..."
+cp /shared/landscapes/$1/config/* /shared/eln/config/
