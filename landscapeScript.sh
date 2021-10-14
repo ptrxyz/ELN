@@ -1,5 +1,15 @@
 #!/bin/bash
 
+checkFileExists(){
+    if [[ ! -f $1 ]]; then
+        echo "    File $1 does not exist. Please create it."
+        return 1
+    else
+        echo "    Found file $1."
+        return 0
+    fi
+}
+
 checkFolderExists(){
     if [[ ! -d $1 ]]; then
         echo "    Folder $1 does not exist. Please create it."
@@ -20,10 +30,47 @@ checkFolderIsWritable(){
     fi
 }
 
-echo "---- Landscape script for $1 ----"
+copyLandscape(){
+    if ! checkFolderExists "/shared/landscapes/$1"        ; then exit 1; fi
 
-echo "Checks for the file system:"
-# check accessibility of shared folders
+    echo -e "    >>>> Copying configuration files from landscape [$1] to setup ...\n"
+    if checkFolderExists "/shared/landscapes/$1/config" ; then cp /shared/landscapes/$1/config/*  /shared/eln/config/;  else echo "        Skipping..." ; fi
+    if checkFolderExists "/shared/landscapes/$1/log"    ; then cp /shared/landscapes/$1/log/*     /shared/eln/log/;     else echo "        Skipping..." ; fi
+    if checkFolderExists "/shared/landscapes/$1/public" ; then cp /shared/landscapes/$1/public/*  /shared/eln/public/;  else echo "        Skipping..." ; fi
+    if checkFolderExists "/shared/landscapes/$1/tmp"    ; then cp /shared/landscapes/$1/tmp/*     /shared/eln/tmp/;     else echo "        Skipping..." ; fi
+    if checkFolderExists "/shared/landscapes/$1/uploads"; then cp /shared/landscapes/$1/uploads/* /shared/eln/uploads/; else echo "        Skipping..." ; fi
+    if checkFileExists   "/shared/landscapes/$1/.env"   ; then cp /shared/landscapes/$1/.env      /shared/eln/;         else echo "        Skipping..." ; fi
+
+    return 0
+}
+
+copyDefaultLandscape(){
+    if ! checkFolderExists "/template/defaultLandscape"        ; then exit 1; fi
+    if ! checkFolderExists "/template/defaultLandscape/config" ; then exit 1; fi
+    if ! checkFolderExists "/template/defaultLandscape/log"    ; then exit 1; fi
+    if ! checkFolderExists "/template/defaultLandscape/public" ; then exit 1; fi
+    if ! checkFolderExists "/template/defaultLandscape/tmp"    ; then exit 1; fi
+    if ! checkFolderExists "/template/defaultLandscape/uploads"; then exit 1; fi
+    if ! checkFileExists "/template/defaultLandscape/.env"; then exit 1; fi
+
+    echo -e "    >>>> Copying configuration files from default landscape to setup ...\n"
+    cp -r /template/defaultLandscape/config/* /shared/eln/config/
+    cp -r /template/defaultLandscape/log/* /shared/eln/log/
+    cp -r /template/defaultLandscape/public/* /shared/eln/public/
+    cp -r /template/defaultLandscape/tmp/* /shared/eln/tmp/
+    cp -r /template/defaultLandscape/uploads/* /shared/eln/uploads/
+    cp /template/defaultLandscape/.env /shared/eln/
+
+    return 0
+}
+
+echo "---- Script deploys landscape [$1] ----"
+if [[ $2 == "nodefault" ]]; then
+    echo "---- not based on the default landscape ----" 
+else
+    echo "---- based on the default landscape ----"
+fi
+
 if ! mount | grep "on /shared" 2>&1 1>/dev/null; then
     echo "    The shared folder is not correctly connected as volume. Please make sure that a folder shared/ is available next to the docker-compose.yml file."
     exit 1
@@ -31,22 +78,10 @@ else
     echo "    Found folder /shared."
 fi
 
-if ! checkFolderExists "/shared/landscapes/$1"        ; then exit 1; fi
-if ! checkFolderExists "/shared/landscapes/$1/config" ; then exit 1; fi
-# if ! checkFolderExists "/shared/landscapes/$1/log"    ; then exit 1; fi
-if ! checkFolderExists "/shared/landscapes/$1/public" ; then exit 1; fi
-# if ! checkFolderExists "/shared/landscapes/$1/tmp"    ; then exit 1; fi
-# if ! checkFolderExists "/shared/landscapes/$1/uploads"; then exit 1; fi
+if [[ $2 == "default" ]]; then
+    copyDefaultLandscape
+fi
 
-# check write permissions in folder
-if ! checkFolderIsWritable "/shared/landscapes/$1"        ; then exit 1; fi
-if ! checkFolderIsWritable "/shared/landscapes/$1/config" ; then exit 1; fi
-# if ! checkFolderIsWritable "/shared/landscapes/$1/log"    ; then exit 1; fi
-if ! checkFolderIsWritable "/shared/landscapes/$1/public" ; then exit 1; fi
-# if ! checkFolderIsWritable "/shared/landscapes/$1/tmp"    ; then exit 1; fi
-# if ! checkFolderIsWritable "/shared/landscapes/$1/uploads"; then exit 1; fi
-
-echo "    Copying configuration files from landscape to setup ..."
-cp /shared/landscapes/$1/config/* /shared/eln/config/
-cp /shared/landscapes/$1/public/* /shared/eln/public/
-cp /shared/landscapes/$1/.env /shared/eln/
+if [[ $1 != "default" ]]; then
+    copyLandscape $1
+fi

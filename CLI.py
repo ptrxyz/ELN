@@ -28,6 +28,7 @@ def getUbuntuVersion():
 
 @click.group()
 def cli():
+    """Command line interface of the ELN Docker image"""
     pass
 
 @click.command()
@@ -38,14 +39,19 @@ def init():
 
 @click.group()
 def landscape():
+    """Manage configuration landscapes for the ELN"""
     pass
 
 @landscape.command()
 @click.option("--name", default="default", help="Name of an existing landscape in /share/landscapes/")
-def deploy(name):
+@click.option("--nodefault/--default", help="Should the deployed landscape be based on the default")
+def deploy(name, nodefault):
     """Establish a configuration landscape for the ELN"""
     click.echo(f"Deploy landscape: {name}")
-    runShellScript(["/etc/scripts/landscapeScript.sh", name])
+    if nodefault:
+        runShellScript(["/etc/scripts/landscapeScript.sh", name, "nodefault"])
+    else:
+        runShellScript(["/etc/scripts/landscapeScript.sh", name, "default"])
 
 @click.command()
 @click.option("--destination", help="Destination path for the backup.")

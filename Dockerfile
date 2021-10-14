@@ -152,6 +152,8 @@ RUN mv /chemotion/app/.env.production.example /template/.env
 # clean up some unnecessary files
 RUN find /template /chemotion/app -iname '*.gitlab' -print -delete -or -iname '*.travis' -print -delete 
 
+COPY ./defaultLandscape /template/defaultLandscape
+
 RUN mkdir -p /etc/scripts
 
 RUN apt-get -y update && apt-get -y upgrade
