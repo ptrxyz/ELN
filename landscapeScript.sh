@@ -34,12 +34,12 @@ copyLandscape(){
     if ! checkFolderExists "/shared/landscapes/$1"        ; then exit 1; fi
 
     echo -e "    >>>> Copying configuration files from landscape [$1] to setup ...\n"
-    if checkFolderExists "/shared/landscapes/$1/config" ; then cp /shared/landscapes/$1/config/*  /shared/eln/config/;  else echo "        Skipping..." ; fi
-    if checkFolderExists "/shared/landscapes/$1/log"    ; then cp /shared/landscapes/$1/log/*     /shared/eln/log/;     else echo "        Skipping..." ; fi
-    if checkFolderExists "/shared/landscapes/$1/public" ; then cp /shared/landscapes/$1/public/*  /shared/eln/public/;  else echo "        Skipping..." ; fi
-    if checkFolderExists "/shared/landscapes/$1/tmp"    ; then cp /shared/landscapes/$1/tmp/*     /shared/eln/tmp/;     else echo "        Skipping..." ; fi
-    if checkFolderExists "/shared/landscapes/$1/uploads"; then cp /shared/landscapes/$1/uploads/* /shared/eln/uploads/; else echo "        Skipping..." ; fi
-    if checkFileExists   "/shared/landscapes/$1/.env"   ; then cp /shared/landscapes/$1/.env      /shared/eln/;         else echo "        Skipping..." ; fi
+    if checkFolderExists "/shared/landscapes/$1/config" ; then cp -r /shared/landscapes/$1/config/*  /shared/eln/config/;  else echo "        Skipping..." ; fi
+    if checkFolderExists "/shared/landscapes/$1/log"    ; then cp -r /shared/landscapes/$1/log/*     /shared/eln/log/;     else echo "        Skipping..." ; fi
+    if checkFolderExists "/shared/landscapes/$1/public" ; then cp -r /shared/landscapes/$1/public/*  /shared/eln/public/;  else echo "        Skipping..." ; fi
+    if checkFolderExists "/shared/landscapes/$1/tmp"    ; then cp -r /shared/landscapes/$1/tmp/*     /shared/eln/tmp/;     else echo "        Skipping..." ; fi
+    if checkFolderExists "/shared/landscapes/$1/uploads"; then cp -r /shared/landscapes/$1/uploads/* /shared/eln/uploads/; else echo "        Skipping..." ; fi
+    if checkFileExists   "/shared/landscapes/$1/.env"   ; then cp /shared/landscapes/$1/.env         /shared/eln/;         else echo "        Skipping..." ; fi
 
     return 0
 }
