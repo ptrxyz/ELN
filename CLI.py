@@ -1,17 +1,27 @@
 import click
 import subprocess
 import pty
+import psutil
 
 def getCommandOutput(commandArray, suppressErrors=True):
-    process = subprocess.Popen(commandArray, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    output = process.communicate()
-    returnCode = process.returncode
-    stdout = output[0].decode("UTF-8")
-    stderr = output[1].decode("UTF-8")
-    if suppressErrors:
-        return stdout
-    else:
-        return stdout, stderr, returnCode
+    try:
+        process = subprocess.Popen(commandArray, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        
+        output = process.communicate()
+        returnCode = process.returncode
+        stdout = output[0].decode("UTF-8")
+        stderr = output[1].decode("UTF-8")
+        if suppressErrors:
+            return stdout
+        else:
+            return stdout, stderr, returnCode
+
+    except OSError as e:
+        print(e.filename)
+        if suppressErrors:
+            return "-"
+        else:
+            return "-","-","-"
 
 def runShellScript(commandArray):
     subprocess.call(commandArray)
@@ -94,15 +104,40 @@ def userShell():
 @click.command()
 def info():
     """Display information about the existing installation"""
-    click.echo(f"Info...")
     uname = getCommandOutput(['uname', '-a'])
     ubuntuRelease = getUbuntuVersion()
-    numberCores, errorInfo, returnCode = getCommandOutput(['nproc', '--all'], False)
     click.echo(f"System: {uname}")
     click.echo(f"Ubuntu {ubuntuRelease}")
-    click.echo(f"Number cores: {numberCores}")
-    click.echo(f"Error info of nproc --all: {errorInfo}\n")
-    click.echo(f"Return code of nproc --all: {returnCode}")
+ 
+    click.echo(f"Number CPU cores: {psutil.cpu_count()}")
+ 
+    memory = psutil.virtual_memory()
+    click.echo(f"Memory:")
+    click.echo(f"    total: {psutil._common.bytes2human(memory.total)}")
+    click.echo(f"    available: {psutil._common.bytes2human(memory.available)}")
+    click.echo(f"Storage:")
+ 
+    storageRoot = psutil.disk_usage("/")
+    click.echo(f"    /:")
+    click.echo(f"        total: {psutil._common.bytes2human(storageRoot.total)}")
+    click.echo(f"        available: {psutil._common.bytes2human(storageRoot.free)}")
+    storageShared = psutil.disk_usage("/shared")
+    click.echo(f"    /shared:")
+    click.echo(f"        total: {psutil._common.bytes2human(storageShared.total)}")
+    click.echo(f"        available: {psutil._common.bytes2human(storageShared.free)}")
+
+    click.echo(f"Used program versions:")
+    rubyVersion = getCommandOutput(['ruby','--version'])
+    click.echo(f"    Ruby version: {rubyVersion}")
+    passengerVersion = getCommandOutput(['passenger','--version'])
+    click.echo(f"    Passenger version: {passengerVersion} \n")
+    nodeVersion = getCommandOutput(['node','--version'])
+    click.echo(f"    Node version: {nodeVersion}")
+    npmVersion = getCommandOutput(['npm','-v'])
+    click.echo(f"    NPM version: {npmVersion}")
+    chemotionVersion = "-"
+    click.echo(f"    Chemotion version: {chemotionVersion} \n")
+
 
 cli.add_command(init)
 cli.add_command(landscape)
