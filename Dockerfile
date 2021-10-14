@@ -132,7 +132,7 @@ COPY ./lddcheck /bin/lddcheck
 RUN find /ruby/lib/ruby/gems/ /node/lib/node_modules -iname '*.so' -type f -exec lddcheck \{\} \; | tee /lddlog.txt | grep not | grep -v libRD | sort | uniq
 
 # copy config template to image
-RUN mkdir -p /shared /template 
+RUN mkdir -p /shared /template
 RUN for foldername in uploads log public config tmp; do echo "Exposing [${foldername}] ..."; \
     mkdir -p /chemotion/app/${foldername}; \
     mv /chemotion/app/${foldername} /template; \
@@ -152,6 +152,7 @@ RUN mv /chemotion/app/.env.production.example /template/.env
 # clean up some unnecessary files
 RUN find /template /chemotion/app -iname '*.gitlab' -print -delete -or -iname '*.travis' -print -delete 
 
+RUN mkdir -p /etc/scripts
 
 RUN apt-get -y update && apt-get -y upgrade
 RUN apt-get -y --autoremove --fix-missing install \
@@ -161,7 +162,7 @@ RUN apt-get -y --autoremove --fix-missing install \
 # Lines needed to be compatible with docker 1.26+ versions of tini
 # as of Apr. 28, we use cmd.sh as init system.
 RUN ln -s /usr/bin/tini /tini
-RUN ln -s /shared/cmd.sh /init
+RUN ln -s /etc/scripts/cmd.sh /init
 ENTRYPOINT ["/usr/bin/tini", "--", "/init"]
 
 

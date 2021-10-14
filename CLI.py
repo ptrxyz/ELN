@@ -34,7 +34,7 @@ def cli():
 def init():
     """Initialization of the DB and required configurations"""
     click.echo(f"Initialization...")
-    runShellScript(["/shared/initScript.sh"])
+    runShellScript(["/etc/scripts/initScript.sh"])
 
 @click.group()
 def landscape():
@@ -44,34 +44,34 @@ def landscape():
 @click.option("--name", default="default", help="Name of an existing landscape in /share/landscapes/")
 def deploy(name):
     """Establish a configuration landscape for the ELN"""
-    click.echo(f"Form landscape: {name}")
-    runShellScript(["/shared/landscapeScript.sh", name])
+    click.echo(f"Deploy landscape: {name}")
+    runShellScript(["/etc/scripts/landscapeScript.sh", name])
 
 @click.command()
 @click.option("--destination", help="Destination path for the backup.")
 def backup(destination):
     """Backup the existing DB, data and configurations to a given DESTINATION"""
     click.echo(f"Backup to {destination}")
-    runShellScript(["./backupScript.sh"])
+    runShellScript(["/etc/scripts/backupScript.sh"])
 
 @click.command()
 @click.option("--version", default="1.0", help="Target version for the upgrade.")
 def upgrade(version):
     """Upgrade an existing ELN installation to a desired VERSION"""
     click.echo(f"Upgrading to version {version}")
-    runShellScript(["./upgradeScript.sh"])
+    runShellScript(["/etc/scripts/upgradeScript.sh"])
     
 @click.command()
 def startEln():
     """Start ELN"""
     click.echo(f"Start ELN...")
-    runShellScript(["./startELNscript.sh"])
+    runShellScript(["/etc/scripts/startELNscript.sh"])
     
 @click.command()
 def startWorker():
     """Start worker"""
     click.echo(f"Start worker...")
-    runShellScript(["./startWorkerScript.sh"])
+    runShellScript(["/etc/scripts/startWorkerScript.sh"])
     
 @click.command()
 def shell():

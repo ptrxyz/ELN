@@ -53,7 +53,7 @@ echo "Checks for the database:"
 # check accessibility of DB:
 db_profile="production"
 db_configfile="/shared/eln/config/database.yml"
-source <( python3 /shared/parseYML.py read --upper --prefix=DB_ $db_configfile $db_profile )
+source <( python3 /etc/scripts/parseYML.py read --upper --prefix=DB_ $db_configfile $db_profile )
 # db_name="chemotion"
 # db_role="chemotion"
 # db_password="PleaseChangeThePassword"

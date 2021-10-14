@@ -20,6 +20,7 @@ services:
             - THOR_SILENCE_DEPRECATION=1
         volumes:
             - ./shared:/shared
+            - ./scripts:/etc/scripts
         network_mode: service:db
 #        expose:
 #            - '4000'

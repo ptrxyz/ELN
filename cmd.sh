@@ -5,6 +5,6 @@ case "$1" in
         exec /bin/bash
         ;;
     *)
-        python3 /shared/CLI.py $@
+        python3 /etc/scripts/CLI.py $@
         ;;
 esac
