@@ -136,6 +136,10 @@ def info():
     npmVersion = getCommandOutput(['npm','-v'])
     click.echo(f"    NPM version: {npmVersion}")
     chemotionVersion = "-"
+    bundlerVersion = getCommandOutput(['bundler','--version'])
+    click.echo(f"    Bundler version: {bundlerVersion}")
+    pandocVersion = getCommandOutput(['pandoc','--version']).partition('\n')[0]
+    click.echo(f"    Pandoc version: {pandocVersion} \n")
     click.echo(f"    Chemotion version: {chemotionVersion} \n")
 
 
