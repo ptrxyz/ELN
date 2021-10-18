@@ -37,6 +37,7 @@ RUN gem install bundler -v 1.17.3
 # install the gems
 COPY ./src /src
 RUN cd /src && RAILS_ENV=production bundle install --jobs=$(getconf _NPROCESSORS_ONLN)
+RUN cd /src && RAILS_ENV=production bundle add passenger
 
 ## hacky way to make cleanup of openbabel possible. should be obsolete
 ## as soon as https://github.com/ComPlat/openbabel-gem/pull/2 is merged.
