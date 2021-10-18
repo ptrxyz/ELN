@@ -19,9 +19,9 @@ def getCommandOutput(commandArray, suppressErrors=True):
     except OSError as e:
         print(e.filename)
         if suppressErrors:
-            return "-"
+            return "-\n"
         else:
-            return "-","-","-"
+            return "-\n","-\n","-\”"
 
 def runShellScript(commandArray):
     subprocess.call(commandArray)
@@ -130,7 +130,7 @@ def info():
     rubyVersion = getCommandOutput(['ruby','--version'])
     click.echo(f"    Ruby version: {rubyVersion}")
     passengerVersion = getCommandOutput(['passenger','--version'])
-    click.echo(f"    Passenger version: {passengerVersion} \n")
+    click.echo(f"    Passenger version: {passengerVersion}")
     nodeVersion = getCommandOutput(['node','--version'])
     click.echo(f"    Node version: {nodeVersion}")
     npmVersion = getCommandOutput(['npm','-v'])
