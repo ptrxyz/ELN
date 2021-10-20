@@ -21,7 +21,7 @@ def getCommandOutput(commandArray, suppressErrors=True):
         if suppressErrors:
             return "-\n"
         else:
-            return "-\n","-\n","-\”"
+            return "-\n","-\n","-\n"
 
 def runShellScript(commandArray):
     subprocess.call(commandArray)
