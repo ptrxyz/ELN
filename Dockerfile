@@ -1,79 +1,12 @@
 ################################################################################
 # RUBY                                                                         #
 ################################################################################
-FROM ubuntu:21.04 AS ruby
-# set timezone
-ARG TZ=Europe/Berlin
-RUN ln -s /usr/share/zoneinfo/${TZ} /etc/localtime
-
-# install system packages
-RUN apt-get -y update && apt-get -y upgrade
-RUN apt-get -y --autoremove --fix-missing install \
-    build-essential git \
-    curl `# for pandoc` \
-    libssl-dev libreadline-dev zlib1g-dev `# for building ruby`
-
-# for the gems
-RUN apt-get -y --autoremove --fix-missing install \
-    cmake libpq-dev swig \
-    libboost-serialization-dev \
-    libboost-iostreams-dev \
-    libboost-system-dev \
-    libeigen3-dev \
-    libmagickcore-dev \    
-    python3-dev libsqlite3-dev
-
-# install ruby
-RUN cd /tmp && \
-    curl https://cache.ruby-lang.org/pub/ruby/2.6/ruby-2.6.8.tar.bz2 2>/dev/null | tar xvj
-
-RUN cd /tmp/ruby-2.6.8 && \
-    ./configure --enable-shared --prefix /ruby && \
-    make -j$(getconf _NPROCESSORS_ONLN) && \
-    make install
-RUN find /ruby/bin | xargs -i ln -s {} /bin/
-RUN gem install bundler -v 1.17.3
-
-# install the gems
-COPY ./src /src
-RUN cd /src && RAILS_ENV=production bundle install --jobs=$(getconf _NPROCESSORS_ONLN)
-RUN cd /src && RAILS_ENV=production bundle add passenger
-
-## hacky way to make cleanup of openbabel possible. should be obsolete
-## as soon as https://github.com/ComPlat/openbabel-gem/pull/2 is merged.
-#RUN cd /ruby/lib/ruby/gems/2.6.0/bundler/gems/openbabel-gem-3e25548fd95c/openbabel/build && \
-#    cmake .. -DCMAKE_INSTALL_PREFIX=/openbabel/ -DBUILD_GUI=OFF -DENABLE_TESTS=OFF -DRUN_SWIG=ON -DRUBY_BINDINGS=ON
-#RUN cd /ruby/lib/ruby/gems/2.6.0/bundler/gems/openbabel-gem-3e25548fd95c/openbabel/build && \
-#    make -j$(getconf _NPROCESSORS_ONLN) && \
-#    make install
-#RUN tar cf /raw /openbabel 
-#RUN cd /ruby/lib/ruby/gems/2.6.0/bundler/gems/openbabel-gem-3e25548fd95c/ && rm -rf openbabel && tar xf /raw 
+FROM chemotion-build:latest-ruby AS ruby
 
 ################################################################################
 # NODE                                                                         #
 ################################################################################
-FROM ubuntu:21.04 AS node
-# set timezone
-ARG TZ=Europe/Berlin
-RUN ln -s /usr/share/zoneinfo/${TZ} /etc/localtime
-
-# install system packages
-RUN apt-get -y update && apt-get -y upgrade
-
-# wget: to download node
-# git: for "npm install"
-RUN apt-get -y install wget git 
-
-ARG NODE_VERSION=v14.16.0
-ARG NODE_STRING=node-${NODE_VERSION}-linux-x64
-RUN wget -O /tmp/node.tar.gz https://nodejs.org/dist/${NODE_VERSION}/${NODE_STRING}.tar.gz
-RUN cd / && tar xfvz /tmp/node.tar.gz
-RUN mv ${NODE_STRING} /node
-RUN PATH=/node/bin:$PATH npm install -g yarn
-RUN find /node/bin/ | xargs -i ln -s {} /bin/
-
-COPY ./src /src
-RUN cd /src && yarn install --production --modules-folder /node/lib/node_modules
+FROM chemotion-build:latest-node AS node
 
 ################################################################################
 # MAIN                                                                         #
@@ -111,29 +44,41 @@ RUN PANDOC_VERSION=2.10.1 && \
     curl -o /tmp/${pandoc_pkg} -L https://github.com/jgm/pandoc/releases/download/${PANDOC_VERSION}/${pandoc_pkg} && \
     dpkg -i /tmp/${pandoc_pkg} && rm /tmp/${pandoc_pkg}
 
-# install ruby
-COPY --from=ruby /ruby /ruby
-COPY --from=node /node /node
-ENV NODE_PATH=/node/lib/node_modules
+# install ruby + node + modules
+COPY --from=ruby /ruby         /ruby
+COPY --from=node /node         /node
+COPY --from=node /node_modules /chemotion/app/node_modules
+COPY --from=node /yarn/cache   /yarn/cache
 
 # symlink the binaries to /bin
 RUN find /ruby/bin /node/bin -not -type d | xargs -i ln -s {} /bin/
 
 # sanity checking
-RUN ruby -v && bundle -v && gem -v && rails -v && node -v && npm -v && npx -v && yarn -v   ``
+RUN ruby -v && bundle -v && gem -v && rails -v && node -v && npm -v && npx -v && yarn -v
 
 # copy the app
 COPY ./src /chemotion/app/
 ENV RAILS_ENV=production
+ENV NODE_ENV=production
+# this line is needed due to moving config folder around (where webpacks config .js files life)
+# it avoids MODULE_NOT_FOUND errors during webpack compilation
+ENV NODE_PATH=/chemotion/app/node_modules/
+RUN yarn cache dir && \
+    yarn config set cache-folder /yarn/cache && \
+    cd /chemotion/app && \
+    yarn install --link-duplicates
+
+# # Should be unnecessary
+# RUN apt-get -y --autoremove --fix-missing install git vim
 # RUN cd /chemotion/app && bundle install --jobs=$(getconf _NPROCESSORS_ONLN)
-# RUN cd /chemotion/app && yarn install --production --modules-folder /node/lib/node_modules
+# RUN cd /chemotion/app && unset NODE_PATH && yarn install --production
 
 # check dependencies 
-COPY ./lddcheck /bin/lddcheck
-RUN find /ruby/lib/ruby/gems/ /node/lib/node_modules -iname '*.so' -type f -exec lddcheck \{\} \; | tee /lddlog.txt | grep not | grep -v libRD | sort | uniq
+# COPY ./lddcheck /bin/lddcheck
+# RUN find /ruby/lib/ruby/gems/ /node/lib/node_modules -iname '*.so' -type f -exec lddcheck \{\} \; | tee /lddlog.txt | grep not | grep -v libRD | sort | uniq
 
 # copy config template to image
-RUN mkdir -p /shared /template
+RUN mkdir -p /shared /template 
 RUN for foldername in uploads log public config tmp; do echo "Exposing [${foldername}] ..."; \
     mkdir -p /chemotion/app/${foldername}; \
     mv /chemotion/app/${foldername} /template; \
@@ -151,24 +96,13 @@ RUN for filename in .env; do echo "Exposing [${filename}] ..."; \
 RUN mv /chemotion/app/.env.production.example /template/.env
 
 # clean up some unnecessary files
-RUN find /template /chemotion/app -iname '*.gitlab' -print -delete -or -iname '*.travis' -print -delete 
-
-COPY ./defaultLandscape /template/defaultLandscape
-
-RUN mkdir -p /etc/scripts
-
-RUN apt-get -y update && apt-get -y upgrade
-RUN apt-get -y --autoremove --fix-missing install \
-    python3-click \
-    python3-yaml \
-    python3-psutil
+RUN find /template /chemotion/app -iname '*.gitlab' -print -delete -or -iname '*.travis' -print -delete
 
 # Lines needed to be compatible with docker 1.26+ versions of tini
 # as of Apr. 28, we use cmd.sh as init system.
 RUN ln -s /usr/bin/tini /tini
-RUN ln -s /etc/scripts/cmd.sh /init
+RUN ln -s /bin/bash /init
 ENTRYPOINT ["/usr/bin/tini", "--", "/init"]
-
 
 
 #####

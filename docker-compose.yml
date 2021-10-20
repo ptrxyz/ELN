@@ -1,7 +1,7 @@
 version: '3'
 services:
     db:
-        image: 'postgres:latest'
+        image: 'postgres:14'
         restart: unless-stopped
         volumes:
             - db_data:/var/lib/postgresql/data
@@ -11,20 +11,15 @@ services:
             - PSTGRES_PASSWORD=postgres
 
     eln:
-        build: 
-            context: .
-            dockerfile: Dockerfile
+        image: 'chemotion-build:latest-eln'
         depends_on:
             - db
         environment:
             - THOR_SILENCE_DEPRECATION=1
         volumes:
-            - ./shared:/shared
-            - ./scripts:/etc/scripts
-        network_mode: service:db
-#        expose:
-#            - '4000'
-#            - '4001'
+          - ./init.sh:/run/eln/init.sh
+        entrypoint: "/bin/bash -c 'while true; do /usr/bin/sleep 1; done'"
+
 
 # Persist database information after container is removed
 volumes:
