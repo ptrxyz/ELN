@@ -17,9 +17,14 @@ services:
         environment:
             - THOR_SILENCE_DEPRECATION=1
         volumes:
-          - ./init.sh:/run/eln/init.sh
-        entrypoint: "/bin/bash -c 'while true; do /usr/bin/sleep 1; done'"
-
+            - ./shared:/shared
+            - ./scripts:/etc/scripts
+#        network_mode: service:db
+        ports:
+            - 3000:3000
+#        expose:
+#            - '4000'
+#            - '4001'
 
 # Persist database information after container is removed
 volumes:

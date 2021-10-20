@@ -138,3 +138,5 @@ bundle exec rails r 'MakeKetcherailsSprites.perform_now'
 # do not use -i here. Docker prevents it from working...
 echo "    Unblocking access to PubChem server..."
 sed '/pubchem.ncbi.nlm.nih.gov/d' /etc/hosts > /etc/hosts
+
+bundle exec rake assets:precompile

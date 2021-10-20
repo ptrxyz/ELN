@@ -98,10 +98,20 @@ RUN mv /chemotion/app/.env.production.example /template/.env
 # clean up some unnecessary files
 RUN find /template /chemotion/app -iname '*.gitlab' -print -delete -or -iname '*.travis' -print -delete
 
+COPY ./defaultLandscape /template/defaultLandscape
+
+RUN mkdir -p /etc/scripts
+
+RUN apt-get -y update && apt-get -y upgrade
+RUN apt-get -y --autoremove --fix-missing install \
+    python3-click \
+    python3-yaml \
+    python3-psutil
+
 # Lines needed to be compatible with docker 1.26+ versions of tini
 # as of Apr. 28, we use cmd.sh as init system.
 RUN ln -s /usr/bin/tini /tini
-RUN ln -s /bin/bash /init
+RUN ln -s /etc/scripts/cmd.sh /init
 ENTRYPOINT ["/usr/bin/tini", "--", "/init"]
 
 
