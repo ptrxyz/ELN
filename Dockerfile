@@ -80,20 +80,14 @@ RUN yarn cache dir && \
 # copy config template to image
 RUN mkdir -p /shared /template 
 RUN for foldername in uploads log public config tmp; do echo "Exposing [${foldername}] ..."; \
-    mkdir -p /chemotion/app/${foldername}; \
-    mv /chemotion/app/${foldername} /template; \
     ln -s /shared/eln/${foldername} /chemotion/app/${foldername}; \
     done
 
 RUN for filename in .env; do echo "Exposing [${filename}] ..."; \
     folder=$(dirname ${filename}); \
     fname=$(basename ${filename}); \
-    mkdir -p /chemotion/app/${folder} /template/${folder} 2>/dev/null || true; \
-    mv /chemotion/app/${filename} /template/${folder}/${fname} 2>/dev/null || true; \
     ln -s /shared/eln/${filename} /chemotion/app/${folder}/${fname}; \
     done
-
-RUN mv /chemotion/app/.env.production.example /template/.env
 
 # clean up some unnecessary files
 RUN find /template /chemotion/app -iname '*.gitlab' -print -delete -or -iname '*.travis' -print -delete
