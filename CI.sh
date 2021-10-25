@@ -1,14 +1,16 @@
 #!/bin/bash
-date > log.txt
+logfile=$(date +"%FT%H%M")_log.txt
+
+date > $logfile
 
 rm -rf src/
-mkdir -p defaultLandscape/log /defaultLandscape/tmp defaultLandscape/uploads
+mkdir -p defaultLandscape/log defaultLandscape/tmp defaultLandscape/uploads
 mkdir -p shared/eln/config shared/eln/log shared/eln/public shared/eln/tmp shared/eln/uploads
  
 git clone https://github.com/ComPlat/chemotion_ELN src
 cd src
-echo "based on revision:" >> ../log.txt
-git log | head -1 >> ../log.txt
+echo "based on revision:" >> ../$logfile
+git log | head -1 >> ../$logfile
 cd ..
 
  
@@ -26,4 +28,4 @@ $startELN &>/dev/null &
 
 sleep 5
 
-curl -L localhost:3000 >> log.txt
+curl -L localhost:3000 >> $logfile
