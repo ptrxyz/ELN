@@ -2,15 +2,15 @@
 
 
 build_ruby() {
-	docker build -t chemotion-build:latest-ruby -f dckr-ruby .
+	docker build --no-cache -t chemotion-build:latest-ruby -f dckr-ruby .
 }
 
 build_node() {
-	docker build -t chemotion-build:latest-node -f dckr-node .
+	docker build --no-cache -t chemotion-build:latest-node -f dckr-node .
 }
 
 build_eln() {
-	docker build -t chemotion-build:latest-eln -f Dockerfile .
+	docker build --no-cache -t chemotion-build:latest-eln -f Dockerfile .
 }
 
 while [ -n "$1" ]; do 

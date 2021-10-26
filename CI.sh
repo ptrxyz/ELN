@@ -26,7 +26,7 @@ docker-compose run --service-ports eln init
 startELN="docker-compose run --service-ports eln starteln"
 $startELN &>/dev/null &
 
-sleep 5
+sleep 15
 
 curl -L localhost:3000 >> $logfile
 
