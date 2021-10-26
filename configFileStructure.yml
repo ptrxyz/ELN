@@ -1,0 +1,27 @@
+version: '1.02'
+root:
+    file1:
+        name: 'environment'
+        file: '.env'
+
+    config:
+        file1:
+            name: 'database'
+            file: 'database.yml'
+        file2:
+            name: 'datacollectors'
+            file: 'datacollectors.yml'
+        file3:
+            name: 'storage'
+            file: 'storage.yml'
+
+    public:
+        file1:
+            name: 'welcome-message'
+            file: 'welcome-message.md'
+
+    log:
+
+    tmp:
+
+    uploads:
