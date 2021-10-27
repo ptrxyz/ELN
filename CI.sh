@@ -28,6 +28,7 @@ $startELN &>/dev/null &
 
 sleep 15
 
+echo "\n curl -L localhost:3000:\n" >> $logfile
 curl -L localhost:3000 >> $logfile
 
 docker-compose down
