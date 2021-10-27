@@ -1,7 +1,8 @@
 #!/bin/bash
 logfile=$(date +"%FT%H%M")_log.txt
 
-date > $logfile
+echo "Started at:" > $logfile
+date >> $logfile
 
 rm -rf src/
 mkdir -p defaultLandscape/log defaultLandscape/tmp defaultLandscape/uploads
@@ -28,7 +29,10 @@ $startELN &>/dev/null &
 
 sleep 15
 
-echo "\n curl -L localhost:3000:\n" >> $logfile
+echo -e "\ncurl -L localhost:3000:\n" >> $logfile
 curl -L localhost:3000 >> $logfile
+
+echo "Finished at:" > $logfile
+date >> $logfile
 
 docker-compose down
