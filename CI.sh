@@ -32,7 +32,7 @@ sleep 15
 echo -e "\ncurl -L localhost:3000:\n" >> $logfile
 curl -L localhost:3000 >> $logfile
 
-echo "Finished at:" > $logfile
+echo "Finished at:" >> $logfile
 date >> $logfile
 
 docker-compose down
