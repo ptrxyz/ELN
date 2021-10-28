@@ -63,6 +63,7 @@ ENV NODE_ENV=production
 # this line is needed due to moving config folder around (where webpacks config .js files life)
 # it avoids MODULE_NOT_FOUND errors during webpack compilation
 ENV NODE_PATH=/chemotion/app/node_modules/
+ENV NODE_OPTIONS=--max_old_space_size=4096
 RUN yarn cache dir && \
     yarn config set cache-folder /yarn/cache && \
     cd /chemotion/app && \
