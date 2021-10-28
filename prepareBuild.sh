@@ -43,6 +43,12 @@ cd ..
 # TODO tar ball the src folder as chemotion/app and move it to the container via ADD
 # TODO Do we need to move the template folder as well or can it stay outside of the container?
 
+for foldername in $(python3 scripts/parseYML.py read --collect configFileStructure.yml links.item); do
+ echo "Exposing [${foldername}] ..."; \
+ rm -r src/${foldername}; \
+ ln -s /shared/eln/${foldername} src/${foldername}; \
+done
+
 cp -r src/config/* defaultLandscape/config/
 cp -r src/public/* defaultLandscape/public/
  

@@ -1,27 +1,29 @@
 version: '1.02'
-root:
-    file1:
+links:
+    item1:
         name: 'environment'
-        file: '.env'
-
-    config:
-        file1:
-            name: 'database'
-            file: 'database.yml'
-        file2:
-            name: 'datacollectors'
-            file: 'datacollectors.yml'
-        file3:
-            name: 'storage'
-            file: 'storage.yml'
-
-    public:
-        file1:
-            name: 'welcome-message'
-            file: 'welcome-message.md'
-
-    log:
-
-    tmp:
-
-    uploads:
+        item: '.env'
+    item2:
+        name: 'database'
+        item: 'config/database.yml'
+    item3:
+        name: 'datacollectors'
+        item: 'config/datacollectors.yml'
+    item3:
+        name: 'storage'
+        item: 'config/storage.yml'
+    item4:
+        name: 'welcome-message'
+        item: 'public/welcome-message.md'
+    item5:
+        name: 'log'
+        item: 'log'
+    item6:
+        name: 'tmp'
+        item: 'tmp'
+    item7:
+        name: 'uploads'
+        item: 'uploads'
+    item8:
+        name: 'test'
+        item: 'test'
