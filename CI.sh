@@ -20,8 +20,8 @@ for foldername in $(python3 scripts/parseYML.py read --collect configFileStructu
  ln -s /shared/eln/${foldername} src/${foldername}; \
 done
  
-cp -r src/config/* defaultLandscape/config/
-cp -r src/public/* defaultLandscape/public/
+# cp -r src/config/* defaultLandscape/config/
+# cp -r src/public/* defaultLandscape/public/
  
 ./build.sh all
 
