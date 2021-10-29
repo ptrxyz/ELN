@@ -9,27 +9,27 @@ links:
     item3:
         name: 'datacollectors'
         item: 'config/datacollectors.yml'
-    item3:
+    item4:
         name: 'storage'
         item: 'config/storage.yml'
-    item4:
+    item5:
         name: 'welcome-message'
         item: 'public/welcome-message.md'
-    item5:
+    item6:
         name: 'log'
         item: 'log'
-    item6:
+    item7:
         name: 'tmp'
         item: 'tmp'
-    item7:
+    item8:
         name: 'uploads'
         item: 'uploads'
-    item8:
+    item9:
         name: 'webpacker packs'
         item: 'public/packs'
-    item9:
+    item10:
         name: 'node assets'
         item: 'public/assets'
-    items10:
+    items11:
         name: 'secrets'
         item: 'config/secrets.yml'
