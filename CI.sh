@@ -9,6 +9,7 @@ mkdir -p defaultLandscape/log defaultLandscape/tmp defaultLandscape/uploads
 mkdir -p shared/eln/config shared/eln/log shared/eln/public shared/eln/tmp shared/eln/uploads
 mkdir -p shared/eln/public/assets shares/eln/public/packs
 touch shared/eln/config/secrets.yml
+rm src/config/secrets.yml
  
 git clone https://github.com/ComPlat/chemotion_ELN src
 cd src
