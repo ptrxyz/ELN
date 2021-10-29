@@ -14,6 +14,11 @@ echo "based on revision:" >> ../$logfile
 git log | head -1 >> ../$logfile
 cd ..
 
+for foldername in $(python3 scripts/parseYML.py read --collect configFileStructure.yml links.item); do
+ echo "Exposing [${foldername}] ..."; \
+ rm -r src/${foldername}; \
+ ln -s /shared/eln/${foldername} src/${foldername}; \
+done
  
 cp -r src/config/* defaultLandscape/config/
 cp -r src/public/* defaultLandscape/public/
