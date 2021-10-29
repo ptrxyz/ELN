@@ -25,5 +25,11 @@ links:
         name: 'uploads'
         item: 'uploads'
     item8:
-        name: 'test'
-        item: 'test'
+        name: 'webpacker packs'
+        item: 'public/packs'
+    item9:
+        name: 'node assets'
+        item: 'public/assets'
+    items10:
+        name: 'secrets'
+        item: 'config/secrets.yml'
