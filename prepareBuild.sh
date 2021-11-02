@@ -14,7 +14,6 @@ for foldername in $(python3 scripts/parseYML.py read --collect configFileStructu
  mkdir -p shared/eln/${foldername}; \
 done
 mkdir -p shared/eln/config
-touch shared/eln/config/secrets.yml
  
 git clone https://github.com/ComPlat/chemotion_ELN src
 cd src
