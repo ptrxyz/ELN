@@ -47,10 +47,10 @@ copyLandscape(){
 copyDefaultLandscape(){
     if ! checkFolderExists "/template/defaultLandscape"        ; then exit 1; fi
     if ! checkFolderExists "/template/defaultLandscape/config" ; then exit 1; fi
-    if ! checkFolderExists "/template/defaultLandscape/log"    ; then exit 1; fi
+    # if ! checkFolderExists "/template/defaultLandscape/log"    ; then exit 1; fi
     if ! checkFolderExists "/template/defaultLandscape/public" ; then exit 1; fi
-    if ! checkFolderExists "/template/defaultLandscape/tmp"    ; then exit 1; fi
-    if ! checkFolderExists "/template/defaultLandscape/uploads"; then exit 1; fi
+    # if ! checkFolderExists "/template/defaultLandscape/tmp"    ; then exit 1; fi
+    # if ! checkFolderExists "/template/defaultLandscape/uploads"; then exit 1; fi
     if ! checkFileExists "/template/defaultLandscape/.env"; then exit 1; fi
 
     echo -e "    >>>> Copying configuration files from default landscape to setup ...\n"

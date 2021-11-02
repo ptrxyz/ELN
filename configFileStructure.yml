@@ -1,5 +1,5 @@
 version: '1.02'
-links:
+files:
     item1:
         name: 'environment'
         item: '.env'
@@ -16,6 +16,10 @@ links:
         name: 'welcome-message'
         item: 'public/welcome-message.md'
     item6:
+        name: 'secrets'
+        item: 'config/secrets.yml'
+folders:
+    item6:
         name: 'log'
         item: 'log'
     item7:
@@ -30,6 +34,3 @@ links:
     item10:
         name: 'node assets'
         item: 'public/assets'
-    items11:
-        name: 'secrets'
-        item: 'config/secrets.yml'
