@@ -17,8 +17,8 @@ mkdir -p shared/eln/config
  
 git clone https://github.com/ComPlat/chemotion_ELN src
 cd src
-echo "based on revision:" >> ../$logfile
-git log | head -1 >> ../$logfile
+echo "based on Chemotion ELN revision: $(git rev-parse HEAD)" >> ../$logfile
+echo "Chemotion ELN version: $(git describe --abbrev=0 --tags)" >> ../$logfile
 cd ..
 
 for foldername in $(python3 scripts/parseYML.py read --collect configFileStructure.yml folders.item); do
