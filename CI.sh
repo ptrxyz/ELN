@@ -12,6 +12,8 @@ docker-compose run --service-ports eln landscape deploy
 
 docker-compose run --service-ports eln init
 
+docker-compose run --service-ports eln info >> $logfile
+
 startELN="docker-compose run --service-ports eln starteln"
 $startELN &>/dev/null &
 
