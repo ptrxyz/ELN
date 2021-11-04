@@ -17,6 +17,13 @@ mkdir -p shared/eln/config
  
 git clone https://github.com/ComPlat/chemotion_ELN src
 cd src
+if [ -n "$2" ]; then
+ git checkout "$2"
+ if [ $? -eq 0 ]; then
+  echo "checked out tag: $2"
+ else
+  echo "failed to checkout $2 ... falling back to latest commit."
+fi
 echo "based on Chemotion ELN revision: $(git rev-parse HEAD)" >> ../$logfile
 echo "Chemotion ELN version: $(git describe --abbrev=0 --tags)" >> ../$logfile
 cd ..
