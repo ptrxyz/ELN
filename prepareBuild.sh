@@ -20,9 +20,9 @@ cd src
 if [ -n "$2" ]; then
     git checkout "$2"
     if [ $? -eq 0 ]; then
-        echo "checked out tag: $2"
+        echo "checked out tag: $2" >> $logfile
     else
-        echo "failed to checkout $2 ... falling back to latest commit."
+        echo "failed to checkout $2 ... falling back to latest commit." >> $logfile
     fi
 fi
 echo "based on Chemotion ELN revision: $(git rev-parse HEAD)" >> ../$logfile
