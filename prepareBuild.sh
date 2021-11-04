@@ -10,32 +10,33 @@ echo "---- Preparation script ----"
 rm -rf src/
 rm -rf shared/
 for foldername in $(python3 scripts/parseYML.py read --collect configFileStructure.yml folders.item); do
- echo "creating [shared/eln/${foldername}] ..."; \
- mkdir -p shared/eln/${foldername}; \
+    echo "creating [shared/eln/${foldername}] ..."; \
+    mkdir -p shared/eln/${foldername}; \
 done
 mkdir -p shared/eln/config
  
 git clone https://github.com/ComPlat/chemotion_ELN src
 cd src
 if [ -n "$2" ]; then
- git checkout "$2"
- if [ $? -eq 0 ]; then
-  echo "checked out tag: $2"
- else
-  echo "failed to checkout $2 ... falling back to latest commit."
+    git checkout "$2"
+    if [ $? -eq 0 ]; then
+        echo "checked out tag: $2"
+    else
+        echo "failed to checkout $2 ... falling back to latest commit."
+    fi
 fi
 echo "based on Chemotion ELN revision: $(git rev-parse HEAD)" >> ../$logfile
 echo "Chemotion ELN version: $(git describe --abbrev=0 --tags)" >> ../$logfile
 cd ..
 
 for foldername in $(python3 scripts/parseYML.py read --collect configFileStructure.yml folders.item); do
- echo "Exposing [${foldername}] ..."; \
- rm -r src/${foldername}; \
- ln -s /shared/eln/${foldername} src/${foldername}; \
+    echo "Exposing [${foldername}] ..."; \
+    rm -r src/${foldername}; \
+    ln -s /shared/eln/${foldername} src/${foldername}; \
 done
 
 for filename in $(python3 scripts/parseYML.py read --collect configFileStructure.yml files.item); do
- echo "Exposing [${filename}] ..."; \
- rm src/${filename}; \
- ln -s /shared/eln/${filename} src/${filename}; \
+    echo "Exposing [${filename}] ..."; \
+    rm src/${filename}; \
+    ln -s /shared/eln/${filename} src/${filename}; \
 done
