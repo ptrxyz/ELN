@@ -4,7 +4,7 @@ logfile=$(date +"%FT%H%M")_log.txt
 echo "Started at:" > $logfile
 date >> $logfile
 
-./prepareBuild.sh $logfile
+./prepareBuild.sh $logfile $1
  
 ./build.sh all
 

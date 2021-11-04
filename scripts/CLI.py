@@ -36,6 +36,16 @@ def getUbuntuVersion():
 
     return ubuntuRelease
 
+def getChemotionVersion():
+    ubuntuRelease = ""
+    for line in open("/chemotion/app/.version"):
+        line = line.strip()
+        var, arg = line.split('=', 1)
+        if var.startswith('CHEMOTION_TAG'):
+            ubuntuRelease = arg
+
+    return ubuntuRelease
+
 @click.group()
 def cli():
     """Command line interface of the ELN Docker image"""
@@ -141,11 +151,11 @@ def info():
     click.echo(f"    Node version: {nodeVersion}")
     npmVersion = getCommandOutput(['npm','-v'])
     click.echo(f"    NPM version: {npmVersion}")
-    chemotionVersion = "-"
     bundlerVersion = getCommandOutput(['bundler','--version'])
     click.echo(f"    Bundler version: {bundlerVersion}")
     pandocVersion = getCommandOutput(['pandoc','--version']).partition('\n')[0]
     click.echo(f"    Pandoc version: {pandocVersion} \n")
+    chemotionVersion = getChemotionVersion()
     click.echo(f"    Chemotion version: {chemotionVersion} \n")
 
 
