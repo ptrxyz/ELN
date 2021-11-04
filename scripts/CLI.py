@@ -82,7 +82,13 @@ def startEln():
     """Start ELN"""
     click.echo(f"Start ELN...")
     runShellScript(["/etc/scripts/startELNscript.sh"])
-    
+
+@click.command()
+def stopEln():
+    """Stop ELN"""
+    click.echo(f"Stop ELN...")
+    runShellScript(["/etc/scripts/stopELNscript.sh"])
+
 @click.command()
 def startWorker():
     """Start worker"""
@@ -148,6 +154,7 @@ cli.add_command(landscape)
 cli.add_command(backup)
 cli.add_command(upgrade)
 cli.add_command(startEln)
+cli.add_command(stopEln)
 cli.add_command(startWorker)
 cli.add_command(shell)
 cli.add_command(userShell)
