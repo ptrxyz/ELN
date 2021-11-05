@@ -16,6 +16,7 @@ services:
             - db
         environment:
             - THOR_SILENCE_DEPRECATION=1
+        command: ["starteln"]    
         volumes:
             - ./shared:/shared
             - ./scripts:/etc/scripts

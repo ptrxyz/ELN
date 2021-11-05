@@ -30,7 +30,8 @@ if [ "$reference" = "$testResult" ]; then echo "SUCCESS!" >> $logfile; else echo
 echo "Finished at:" >> $logfile
 date >> $logfile
 
-dockername=$(docker ps -a | grep chemotion | awk NR==1'{print $1}')
-docker exec -it $dockername /init stopeln
+# dockername=$(docker ps -a | grep chemotion | awk NR==1'{print $1}')
+# docker exec -it $dockername /init stopeln
+docker-compose stop
 
 docker-compose down
