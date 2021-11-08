@@ -37,3 +37,6 @@ folders:
     item5:
         name: 'node assets'
         item: 'public/assets'
+    item5:
+        name: 'images ketcherails'
+        item: 'public/images/ketcherails'

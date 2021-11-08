@@ -123,6 +123,9 @@ production:
   secret_key_base: $SECRET_KEY
 EOF
 
+# echo "    Dropping database..."
+# bundle exec rake db:drop
+
 echo "    Initializing database schemas..."
 bundle exec rake db:create
 echo "    Database created."
