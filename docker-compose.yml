@@ -16,6 +16,7 @@ services:
             - db
         environment:
             - THOR_SILENCE_DEPRECATION=1
+            - USERID=1000
         command: ["starteln"]    
         volumes:
             - ./shared:/shared

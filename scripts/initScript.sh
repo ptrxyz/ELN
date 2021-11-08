@@ -46,6 +46,8 @@ if ! checkFolderIsWritable "/shared/eln/public" ; then exit 1; fi
 if ! checkFolderIsWritable "/shared/eln/tmp"    ; then exit 1; fi
 if ! checkFolderIsWritable "/shared/eln/uploads"; then exit 1; fi
 
+chown -R $USERID:$USERID /shared
+
 # check existance of certain files?
 # copy files - still needed with new Dockerfile?
 
