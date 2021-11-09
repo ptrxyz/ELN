@@ -20,7 +20,7 @@ services:
         command: ["starteln"]    
         volumes:
             - ./shared:/shared
-            - ./scripts:/etc/scripts
+#            - ./scripts:/etc/scripts
 #        network_mode: service:db
         ports:
             - 3000:3000

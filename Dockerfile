@@ -97,7 +97,8 @@ RUN find /template /chemotion/app -iname '*.gitlab' -print -delete -or -iname '*
 
 COPY ./defaultLandscape /template/defaultLandscape
 
-RUN mkdir -p /etc/scripts
+# RUN mkdir -p /etc/scripts
+COPY ./scripts /etc/scripts
 
 RUN apt-get -y update && apt-get -y upgrade
 RUN apt-get -y --autoremove --fix-missing install \
