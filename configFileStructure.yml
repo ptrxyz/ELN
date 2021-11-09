@@ -37,6 +37,12 @@ folders:
     item5:
         name: 'node assets'
         item: 'public/assets'
-    item5:
+    item6:
         name: 'images ketcherails'
         item: 'public/images/ketcherails'
+    item7:
+        name: 'images molecules'
+        item: 'public/images/molecules'
+    item8:
+        name: 'images samples'
+        item: 'public/images/samples'                
