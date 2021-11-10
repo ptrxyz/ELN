@@ -9,13 +9,10 @@ echo "---- Preparation script ----"
 
 rm -rf src/
 rm -rf shared/
-for foldername in $(python3 scripts/parseYML.py read --collect configFileStructure.yml folders.item); do
-    echo "creating [shared/eln/${foldername}] ..."; \
-    mkdir -p shared/eln/${foldername}; \
-done
-mkdir -p shared/eln/config
 
 ./createSetupScript.sh
+
+./setup.sh
 
 git clone https://github.com/ComPlat/chemotion_ELN src
 cd src
