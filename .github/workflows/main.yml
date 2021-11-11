@@ -33,6 +33,4 @@ jobs:
       - name: Run a multi-line script
         run: |
           cd $GITHUB_WORKSPACE
-          ./createSetupScript.sh
-          cat setup.sh
-          git status
+          curl google.de
