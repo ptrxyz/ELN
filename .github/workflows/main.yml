@@ -33,6 +33,6 @@ jobs:
       - name: Run a multi-line script
         run: |
           cd $GITHUB_WORKSPACE
-          createSetupScript.sh
+          ./createSetupScript.sh
           cat setup.sh
           git status
