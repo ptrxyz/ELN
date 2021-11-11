@@ -35,8 +35,14 @@ jobs:
           cd $GITHUB_WORKSPACE
           ./CI.sh
           cat 20*
+          docker save -o elnContainer.tar chemotion-build:latest-eln
       - name: Archive test output
         uses: actions/upload-artifact@v2
         with:
           name: test-output-report
           path: 20*
+      - name: Archive container image
+        uses: actions/upload-artifact@v2
+        with:
+          name: eln-container-image
+          path: elnContainer.tar
