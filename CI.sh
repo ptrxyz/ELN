@@ -6,7 +6,11 @@ date >> $logfile
 
 ./prepareBuild.sh $logfile $1
  
-./build.sh all
+if [ -n "$1" ]; then
+	./build.sh $1
+else
+	./build.sh all
+fi
 
 docker-compose run --service-ports eln landscape deploy
 
