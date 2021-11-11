@@ -33,4 +33,4 @@ jobs:
       - name: Run a multi-line script
         run: |
           cd $GITHUB_WORKSPACE
-          curl google.de
+          ./CI.sh
