@@ -12,11 +12,8 @@ fi
 
 read -e -p "
 Overwrite configurations files with default files ? [yes/N] " YN
-
 [[ $YN == "yes" ]] && docker-compose run eln landscape deploy
 
 read -e -p "
-
 Run init script (migrating database, generating sprites, compiliing assets) ? [yes/N] " YN
-
 [[ $YN == "yes" ]] && docker-compose run eln init
