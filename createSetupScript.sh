@@ -1,6 +1,11 @@
-for foldername in $(python3 scripts/parseYML.py read --collect configFileStructure.yml folders.item); do
-    echo "mkdir -p shared/eln/${foldername}" >> setup.sh; \
-done
-echo "mkdir -p shared/eln/config" >> setup.sh
+#!/bin/bash
 
-chmod +x setup.sh
+BASEDIR=$(realpath $(dirname $0))
+YMLPARSE="python3 ${BASEDIR}/scripts/parseYML.py"
+
+echo "#!/bin/bash"
+echo "set -e"
+for foldername in $($YMLPARSE read --collect ${BASEDIR}/configFileStructure.yml folders.item); do
+    echo "mkdir -p shared/eln/${foldername}";
+done
+echo "mkdir -p shared/eln/config"
