@@ -1,17 +1,23 @@
 import click
-from click.utils import echo
 import yaml
+
 
 @click.group()
 def cli():
     pass
 
+
 @click.command()
-@click.option("--prefix", default="", help="string prefix for imported strings")
-@click.option("--upper", is_flag=True, default=False, help="returned keywords should be uppercase letters")
-@click.option("--content", is_flag=True, default=False, help="returned keywords should only contain the returned value")
-@click.option("--title", is_flag=True, default=False, help="returned keywords should only contain the titles")
-@click.option("--collect", is_flag=True, default=False, help="return all values")
+@click.option("--prefix", default="",
+              help="string prefix for imported strings")
+@click.option("--upper", is_flag=True, default=False,
+              help="returned keywords ""should be uppercase letters")
+@click.option("--content", is_flag=True, default=False,
+              help="returned keywords should only contain the returned value")
+@click.option("--title", is_flag=True, default=False,
+              help="returned keywords should only contain the titles")
+@click.option("--collect", is_flag=True, default=False,
+              help="return all values")
 @click.argument("file", nargs=1)
 @click.argument("keywords", nargs=1)
 def read(prefix, upper, content, title, collect, file, keywords):
@@ -41,23 +47,28 @@ def read(prefix, upper, content, title, collect, file, keywords):
                 for item in fileContent:
                     if type(item) is str:
                         if upper:
-                            click.echo(prefix + item.upper() + "=" + str(fileContent[item]))
+                            click.echo(prefix + item.upper() +
+                                       "=" + str(fileContent[item]))
                         elif title:
                             click.echo(item)
                         elif content:
                             click.echo(str(fileContent[item]))
                         else:
-                            click.echo(prefix + item + "=" + str(fileContent[item]))
+                            click.echo(prefix + item + "=" +
+                                       str(fileContent[item]))
 
             else:
                 if upper:
-                    click.echo(prefix + currentKeyword.upper() + "=" + str(fileContent))
+                    click.echo(prefix + currentKeyword.upper() +
+                               "=" + str(fileContent))
                 elif title:
                     click.echo(currentKeyword)
                 elif content:
                     click.echo(str(fileContent))
                 else:
-                    click.echo(prefix + currentKeyword + "=" + str(fileContent))
+                    click.echo(prefix + currentKeyword +
+                               "=" + str(fileContent))
+
 
 cli.add_command(read)
 
