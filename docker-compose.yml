@@ -17,11 +17,11 @@ services:
         environment:
             - THOR_SILENCE_DEPRECATION=1
             - USERID=1000
-        command: ["starteln"]    
+        command: ['starteln']
         volumes:
             - ./shared:/shared
-#            - ./scripts:/etc/scripts
-#        network_mode: service:db
+        #            - ./scripts:/etc/scripts
+        #        network_mode: service:db
         ports:
             - 3000:3000
 #        expose:
