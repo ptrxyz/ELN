@@ -20,7 +20,7 @@ files:
         item: 'config/secrets.yml'
     item7:
         name: 'editors'
-        item: 'config/editors.yml'        
+        item: 'config/editors.yml'
 folders:
     item1:
         name: 'log'
@@ -45,4 +45,4 @@ folders:
         item: 'public/images/molecules'
     item8:
         name: 'images samples'
-        item: 'public/images/samples'                
+        item: 'public/images/samples'
