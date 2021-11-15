@@ -52,14 +52,13 @@ copyDefaultLandscape(){
     # if ! checkFolderExists "/template/defaultLandscape/tmp"    ; then exit 1; fi
     # if ! checkFolderExists "/template/defaultLandscape/uploads"; then exit 1; fi
     if ! checkFileExists "/template/defaultLandscape/.env"; then exit 1; fi
-
+    
     echo -e "    >>>> Copying configuration files from default landscape to setup ...\n"
-    cp -r /template/defaultLandscape/config/* /shared/eln/config/
-    cp -r /template/defaultLandscape/log/* /shared/eln/log/
-    cp -r /template/defaultLandscape/public/* /shared/eln/public/
-    cp -r /template/defaultLandscape/tmp/* /shared/eln/tmp/
-    cp -r /template/defaultLandscape/uploads/* /shared/eln/uploads/
-    cp /template/defaultLandscape/.env /shared/eln/
+
+    SRC="/template/defaultLandscape"
+    DEST="/shared/eln"
+    tar c --directory ${SRC} . | tar xv --one-top-level=${DEST}
+    find ${DEST}
 
     return 0
 }
