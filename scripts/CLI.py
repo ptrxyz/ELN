@@ -95,11 +95,9 @@ def backup(destination):
 
 
 @click.command()
-@click.option("--version", default="1.0", help="Target version "
-              "for the upgrade.")
-def upgrade(version):
-    """Upgrade an existing ELN installation to a desired VERSION"""
-    click.echo(f"Upgrading to version {version}")
+def upgrade():
+    """Upgrade an existing ELN installation to the latest version"""
+    click.echo(f"Upgrading to version {getChemotionVersion()}")
     runShellScript(["/etc/scripts/upgradeScript.sh"])
 
 
