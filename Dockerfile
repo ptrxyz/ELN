@@ -44,6 +44,8 @@ RUN PANDOC_VERSION=2.10.1 && \
     curl -o /tmp/${pandoc_pkg} -L https://github.com/jgm/pandoc/releases/download/${PANDOC_VERSION}/${pandoc_pkg} && \
     dpkg -i /tmp/${pandoc_pkg} && rm /tmp/${pandoc_pkg}
 
+COPY fonts.conf /etc/fonts/conf.d/99-chemotion-fontfix.conf
+
 # install ruby + node + modules
 COPY --from=ruby /ruby         /ruby
 COPY --from=node /node         /node
