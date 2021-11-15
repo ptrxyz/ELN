@@ -21,7 +21,7 @@ function parseFlags() {
 	while [ -n "$1" ]; do 
 		case "$1" in
 			--cache)
-				CACHE=""
+				CACHE=""				
 				;;
 			--no-cache)
 				CACHE="--no-cache"
@@ -33,6 +33,8 @@ function parseFlags() {
 
 # parse flags before executing commands
 parseFlags $@
+
+echo "Cache is turned: "$([[ -n $CACHE ]] && echo "off" || echo "on")
 
 while [ -n "$1" ]; do 
 	case "$1" in
