@@ -6,8 +6,8 @@ date >> $logfile
 
 ./prepareBuild.sh $logfile $1
  
-if [ -n "$1" ]; then
-	./build.sh $1
+if [ -n "$2" ]; then
+	./build.sh $2
 else
 	./build.sh all
 fi

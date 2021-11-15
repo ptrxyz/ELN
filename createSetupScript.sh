@@ -9,3 +9,4 @@ for foldername in $($YMLPARSE read --collect ${BASEDIR}/configFileStructure.yml 
     echo "mkdir -p shared/eln/${foldername}";
 done
 echo "mkdir -p shared/eln/config"
+echo "mkdir -p db-data"
