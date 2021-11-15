@@ -99,14 +99,14 @@ RUN find /template /chemotion/app -iname '*.gitlab' -print -delete -or -iname '*
 
 COPY ./defaultLandscape /template/defaultLandscape
 
-# RUN mkdir -p /etc/scripts
-COPY ./scripts /etc/scripts
-
 RUN apt-get -y update && apt-get -y upgrade
 RUN apt-get -y --autoremove --fix-missing install \
     python3-click \
     python3-yaml \
     python3-psutil
+
+# RUN mkdir -p /etc/scripts
+COPY ./scripts /etc/scripts
 
 # Lines needed to be compatible with docker 1.26+ versions of tini
 # as of Apr. 28, we use cmd.sh as init system.
