@@ -19,12 +19,13 @@ fi
 
 if [ -f shared/eln/config/database.yml ]; then
     oldLandscape=$(date +"%FT%H%M")_old
+    mkdir -p shared/landscapes/$oldLandscape/config
     read -e -p "
     database.yml exists in your old setup. Do you want to transfer it to the new setup ? [yes/N] " YN
-    [[ $YN == "yes" ]] && mkdir -p shared/landscapes/$oldLandscape/config/ && cp shared/eln/config/database.yml shared/landscapes/$oldLandscape/config/
+    [[ $YN == "yes" ]] &&  cp shared/eln/config/database.yml shared/landscapes/$oldLandscape/config/
     read -e -p "
-    Overwrite configuration files with default configuration files (but use old database.yml) ? [yes/N] " YN
-    [[ $YN == "yes" ]] && docker-compose run eln landscape deploy --name $oldLanscape
+    Overwrite other configuration files with default configuration files ? [yes/N] " YN
+    [[ $YN == "yes" ]] && docker-compose run eln landscape deploy --name $oldLandscape
 else
     read -e -p "
     Overwrite configuration files with default files ? [yes/N] " YN
