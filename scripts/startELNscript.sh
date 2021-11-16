@@ -66,7 +66,12 @@ echo "    Database instance ready."
 echo "    Creating database ..."
 if ! (echo "\q" | psql -d $DB_DATABASE -h $DB_HOST -U $DB_USERNAME 2>/dev/null); then
     echo "    Can not connect to database or database needs to be initialized."
+    exit 1
 fi
+
+echo "    Database up and running."
+
+cd /chemotion/app/
 
 bundle exec rake db:migrate
 echo "    Database migrated."
