@@ -20,6 +20,14 @@ checkFolderIsWritable(){
     fi
 }
 
+generateNewSecrets(){
+    SECRET_KEY="$(bundle exec rake secret)"
+    cat <<EOF > config/secrets.yml
+production:
+  secret_key_base: $SECRET_KEY
+EOF
+}
+
 echo "---- Init script ----"
 
 echo "Checks for the file system:"
@@ -55,12 +63,15 @@ echo "Checks for the database:"
 # check accessibility of DB:
 db_profile="production"
 db_configfile="/shared/eln/config/database.yml"
+for variable in $(python3 /etc/scripts/parseYML.py read --upper --prefix=DB_ $db_configfile $db_profile); do
+    if [[ $variable == *"=<"* ]]; then
+        echo "You are using environment definitions for the database configuration. This is obsolete."
+        exit 1
+    fi    
+done
+
 source <( python3 /etc/scripts/parseYML.py read --upper --prefix=DB_ $db_configfile $db_profile )
-# db_name="chemotion"
-# db_role="chemotion"
-# db_password="PleaseChangeThePassword"
-# db_host="db"
-# db_port="5432"
+
 # simply waits for the DB to be up and done booting
 echo "    Evaluated configuration file: $db_configfile"
 echo "    Imported profile: $db_profile"
@@ -68,6 +79,7 @@ echo "    Connecting to host: $DB_HOST ..."
 while ! pg_isready -h $DB_HOST 1>/dev/null 2>&1; do
     echo "    Database instance not ready. Waiting ..."
     sleep 10
+# !!!!!!!!!!!!! check -> error !!!!!!!!!!!!!!!!!
 done
 echo "    Database instance ready."
 
@@ -75,35 +87,36 @@ echo "    Database instance ready."
 echo "    Creating database ..."
 if ! (echo "\q" | psql -d $DB_DATABASE -h $DB_HOST -U $DB_USERNAME 2>/dev/null); then
     echo "    Can not connect to database or database needs to be initialized."
-    # if [[ "x${CREATE_USER}" == x"yes" || x"${INITIALIZE}" == x"yes" ]]; then
-    echo "    Dropping database $DB_DATABASE it it exists ..."
-    psql --host="$DB_HOST" --username 'postgres' -c "
-        DROP DATABASE IF EXISTS $DB_DATABASE;"
-    echo "    Dropping role $DB_USERNAME if it exists ..."
-    echo "    Creating role $DB_USERNAME with password $DB_PASSWORD ..."
-    psql --host="$DB_HOST" --username 'postgres' -c "
-        DROP ROLE IF EXISTS $DB_USERNAME;
-        CREATE ROLE $DB_USERNAME LOGIN CREATEDB NOSUPERUSER PASSWORD '$DB_PASSWORD';"
-    echo "    Creating database $DB_DATABASE for owner $DB_USERNAME ..."
-    psql --host="$DB_HOST" --username 'postgres' -c "            
-        CREATE DATABASE $DB_DATABASE OWNER $DB_USERNAME;
-    " || {
-        echo "    Could not create database. PSQL returned [$?]."
+    read -e -p "
+    Do you want to initialize the database ? [yes/N] " YN
+    if [[ $YN == "yes" ]]; then
+        echo "    Dropping database $DB_DATABASE it it exists ..."
+        psql --host="$DB_HOST" --username 'postgres' -c "
+            DROP DATABASE IF EXISTS $DB_DATABASE;"
+        echo "    Dropping role $DB_USERNAME if it exists ..."
+        echo "    Creating role $DB_USERNAME with password $DB_PASSWORD ..."
+        psql --host="$DB_HOST" --username 'postgres' -c "
+            DROP ROLE IF EXISTS $DB_USERNAME;
+            CREATE ROLE $DB_USERNAME LOGIN CREATEDB NOSUPERUSER PASSWORD '$DB_PASSWORD';"
+        echo "    Creating database $DB_DATABASE for owner $DB_USERNAME ..."
+        psql --host="$DB_HOST" --username 'postgres' -c "            
+            CREATE DATABASE $DB_DATABASE OWNER $DB_USERNAME;
+        " || {
+            echo "    Could not create database. PSQL returned [$?]."
+            exit 1
+        }
+        psql --host="$DB_HOST" --username="$DB_USERNAME" -c "
+            CREATE EXTENSION IF NOT EXISTS \"pg_trgm\";
+            CREATE EXTENSION IF NOT EXISTS \"hstore\";
+            CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";
+            ALTER USER $DB_USERNAME PASSWORD '$DB_PASSWORD';
+        " || {
+            echo "    Failed to set password for database user. PSQL returned [$?]."
+            exit 1
+        }
+    else
         exit 1
-    }
-    psql --host="$DB_HOST" --username="$DB_USERNAME" -c "
-        CREATE EXTENSION IF NOT EXISTS \"pg_trgm\";
-        CREATE EXTENSION IF NOT EXISTS \"hstore\";
-        CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";
-        ALTER USER $DB_USERNAME PASSWORD '$DB_PASSWORD';
-    " || {
-        echo "    Failed to set password for database user. PSQL returned [$?]."
-        exit 1
-    }
-    # else
-    #     echo "Could not connect to database. Make sure to specify connection parameters using DB_HOST, DB_ROLE, DB_NAME, DB_PW."
-    #     exit 1
-    # fi
+    fi
 fi
 
 echo "    Database up and running."
@@ -113,26 +126,21 @@ echo "Database setup:"
 echo "    Blocking access to PubChem server..."
 echo "127.0.0.1    pubchem.ncbi.nlm.nih.gov" >> /etc/hosts
 
-# initialialize ELN
-# execute "${INIT_BASE}/init-scripts/library/eln-init.sh"
 cd /chemotion/app/
 
-SECRET_KEY="$(bundle exec rake secret)"
-cat <<EOF > config/secrets.yml
-production:
-  secret_key_base: $SECRET_KEY
-EOF
-
-# echo "    Dropping database..."
-# bundle exec rake db:drop
+read -e -p "
+Do you want to generate a new secrets.yml ? [yes/N] " YN
+[[ $YN == "yes" ]] && generateNewSecrets
 
 echo "    Initializing database schemas..."
 bundle exec rake db:create
 echo "    Database created."
 bundle exec rake db:migrate
 echo "    Database migrated."
-bundle exec rake db:seed
-echo "    Database seeded."
+
+read -e -p "
+Do you want to seed database data ? [yes/N] " YN
+[[ $YN == "yes" ]] && bundle exec rake db:seed && echo "    Database seeded."
 
 echo "    Creating sprites..."
 bundle exec rake ketcherails:import:common_templates
