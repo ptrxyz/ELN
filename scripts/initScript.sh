@@ -76,10 +76,15 @@ source <( python3 /etc/scripts/parseYML.py read --upper --prefix=DB_ $db_configf
 echo "    Evaluated configuration file: $db_configfile"
 echo "    Imported profile: $db_profile"
 echo "    Connecting to host: $DB_HOST ..."
+iterator=1
 while ! pg_isready -h $DB_HOST 1>/dev/null 2>&1; do
+    ((iterator++))
     echo "    Database instance not ready. Waiting ..."
     sleep 10
-# !!!!!!!!!!!!! check -> error !!!!!!!!!!!!!!!!!
+    if [ $iterator -eq 5 ]; then
+        echo "    Database cannot be reached on $DB_HOST, please check the connection!"
+        exit  1
+    fi
 done
 echo "    Database instance ready."
 
