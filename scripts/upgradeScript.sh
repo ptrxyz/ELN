@@ -3,12 +3,6 @@ echo Running the upgrade script
 
 cd /chemotion/app/
 
-SECRET_KEY="$(bundle exec rake secret)"
-cat <<EOF > config/secrets.yml
-production:
-  secret_key_base: $SECRET_KEY
-EOF
-
 echo "    Executing migrations..."
 bundle exec rake db:migrate
 echo "    Database migrated."

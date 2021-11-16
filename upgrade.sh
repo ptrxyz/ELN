@@ -17,9 +17,20 @@ fi
 
 ./setup.sh
 
-read -e -p "
-Overwrite configurations files with default files ? [yes/N] " YN
-[[ $YN == "yes" ]] && docker-compose run eln landscape deploy
+if [ -f shared/eln/config/database.yml ]; then
+    oldLandscape=$(date +"%FT%H%M")_old
+    mkdir -p shared/landscapes/$oldLandscape/config
+    read -e -p "
+    database.yml exists in your old setup. Do you want to transfer it to the new setup ? [yes/N] " YN
+    [[ $YN == "yes" ]] &&  cp shared/eln/config/database.yml shared/landscapes/$oldLandscape/config/
+    read -e -p "
+    Overwrite other configuration files with default configuration files ? [yes/N] " YN
+    [[ $YN == "yes" ]] && docker-compose run eln landscape deploy --name $oldLandscape
+else
+    read -e -p "
+    Overwrite configuration files with default files ? [yes/N] " YN
+    [[ $YN == "yes" ]] && docker-compose run eln landscape deploy
+fi
 
 read -e -p "
 Run upgrade script (generating secret, migrating database, generating sprites, compiliing assets) ? [yes/N] " YN
