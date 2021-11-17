@@ -95,7 +95,8 @@ if ! (echo "\q" | psql -d $DB_DATABASE -h $DB_HOST -U $DB_USERNAME 2>/dev/null);
     read -e -p "
     Do you want to initialize the database ? [yes/N] " YN
     if [[ $YN == "yes" ]]; then
-        echo "    Dropping database $DB_DATABASE it it exists ..."
+        sleep 3
+        echo "    Dropping database $DB_DATABASE if it exists ..."
         psql --host="$DB_HOST" --username 'postgres' -c "
             DROP DATABASE IF EXISTS $DB_DATABASE;"
         echo "    Dropping role $DB_USERNAME if it exists ..."
