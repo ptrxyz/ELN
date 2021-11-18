@@ -10,6 +10,16 @@ checkFolderExists(){
     fi
 }
 
+checkSymlinkExists(){
+    if [[ ! -d $1 ]]; then
+        echo "    Symlink $1 does not exist. Please create it."
+        return 1
+    else
+        echo "    Found symlink $1."
+        return 0
+    fi
+}
+
 checkFolderIsWritable(){
     if [[ ! -w $1 ]]; then
         echo "    Folder $1 has no write permission. Please grant it."
@@ -46,6 +56,18 @@ if ! checkFolderExists "/shared/eln/public" ; then exit 1; fi
 if ! checkFolderExists "/shared/eln/tmp"    ; then exit 1; fi
 if ! checkFolderExists "/shared/eln/uploads"; then exit 1; fi
 
+if ! checkSymlinkExists "/chemotion/app/log"                      ; then exit 1; fi
+if ! checkSymlinkExists "/chemotion/app/tmp"                      ; then exit 1; fi
+if ! checkSymlinkExists "/chemotion/app/uploads"                  ; then exit 1; fi
+if ! checkSymlinkExists "/chemotion/app/config/database.yml"      ; then exit 1; fi
+if ! checkSymlinkExists "/chemotion/app/config/datacollector.yml" ; then exit 1; fi
+if ! checkSymlinkExists "/chemotion/app/config/editors.yml"       ; then exit 1; fi
+if ! checkSymlinkExists "/chemotion/app/config/secrets.yml"       ; then exit 1; fi
+if ! checkSymlinkExists "/chemotion/app/config/storage.yml"       ; then exit 1; fi
+if ! checkSymlinkExists "/chemotion/app/public/assets"            ; then exit 1; fi
+if ! checkSymlinkExists "/chemotion/app/public/packs"             ; then exit 1; fi
+if ! checkSymlinkExists "/chemotion/app/public/welcome-message.md"; then exit 1; fi
+
 # check write permissions in folder
 if ! checkFolderIsWritable "/shared/eln"        ; then exit 1; fi
 if ! checkFolderIsWritable "/shared/eln/config" ; then exit 1; fi
@@ -54,6 +76,7 @@ if ! checkFolderIsWritable "/shared/eln/public" ; then exit 1; fi
 if ! checkFolderIsWritable "/shared/eln/tmp"    ; then exit 1; fi
 if ! checkFolderIsWritable "/shared/eln/uploads"; then exit 1; fi
 
+[[ -z $USERID ]] && export USERID=1000
 chown -R $USERID:$USERID /shared
 
 # check existance of certain files?
@@ -63,12 +86,17 @@ echo "Checks for the database:"
 # check accessibility of DB:
 db_profile="production"
 db_configfile="/shared/eln/config/database.yml"
-for variable in $(python3 /etc/scripts/parseYML.py read --upper --prefix=DB_ $db_configfile $db_profile); do
-    if [[ $variable == *"=<"* ]]; then
-        echo "You are using environment definitions for the database configuration. This is obsolete."
-        exit 1
-    fi    
-done
+if [ -f $db_configfile ]; then
+    for variable in $(python3 /etc/scripts/parseYML.py read --upper --prefix=DB_ $db_configfile $db_profile); do
+        if [[ $variable == *"=<"* ]]; then
+            echo "You are using environment definitions for the database configuration. This is obsolete."
+            exit 1
+        fi    
+    done
+ else
+    echo "Cannot find the configuration file $db_configfile."
+    exit 1
+fi   
 
 source <( python3 /etc/scripts/parseYML.py read --upper --prefix=DB_ $db_configfile $db_profile )
 
@@ -95,7 +123,8 @@ if ! (echo "\q" | psql -d $DB_DATABASE -h $DB_HOST -U $DB_USERNAME 2>/dev/null);
     read -e -p "
     Do you want to initialize the database ? [yes/N] " YN
     if [[ $YN == "yes" ]]; then
-        echo "    Dropping database $DB_DATABASE it it exists ..."
+        sleep 3
+        echo "    Dropping database $DB_DATABASE if it exists ..."
         psql --host="$DB_HOST" --username 'postgres' -c "
             DROP DATABASE IF EXISTS $DB_DATABASE;"
         echo "    Dropping role $DB_USERNAME if it exists ..."
