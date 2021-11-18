@@ -56,17 +56,17 @@ if ! checkFolderExists "/shared/eln/public" ; then exit 1; fi
 if ! checkFolderExists "/shared/eln/tmp"    ; then exit 1; fi
 if ! checkFolderExists "/shared/eln/uploads"; then exit 1; fi
 
-if ! checkSymlinkExists "/chemotion/app/log"                      ; then exit 1; fi
-if ! checkSymlinkExists "/chemotion/app/tmp"                      ; then exit 1; fi
-if ! checkSymlinkExists "/chemotion/app/uploads"                  ; then exit 1; fi
-if ! checkSymlinkExists "/chemotion/app/config/database.yml"      ; then exit 1; fi
-if ! checkSymlinkExists "/chemotion/app/config/datacollector.yml" ; then exit 1; fi
-if ! checkSymlinkExists "/chemotion/app/config/editors.yml"       ; then exit 1; fi
-if ! checkSymlinkExists "/chemotion/app/config/secrets.yml"       ; then exit 1; fi
-if ! checkSymlinkExists "/chemotion/app/config/storage.yml"       ; then exit 1; fi
-if ! checkSymlinkExists "/chemotion/app/public/assets"            ; then exit 1; fi
-if ! checkSymlinkExists "/chemotion/app/public/packs"             ; then exit 1; fi
-if ! checkSymlinkExists "/chemotion/app/public/welcome-message.md"; then exit 1; fi
+# if ! checkSymlinkExists "/chemotion/app/log"                      ; then exit 1; fi
+# if ! checkSymlinkExists "/chemotion/app/tmp"                      ; then exit 1; fi
+# if ! checkSymlinkExists "/chemotion/app/uploads"                  ; then exit 1; fi
+# if ! checkSymlinkExists "/chemotion/app/config/database.yml"      ; then exit 1; fi
+# if ! checkSymlinkExists "/chemotion/app/config/datacollector.yml" ; then exit 1; fi
+# if ! checkSymlinkExists "/chemotion/app/config/editors.yml"       ; then exit 1; fi
+# if ! checkSymlinkExists "/chemotion/app/config/secrets.yml"       ; then exit 1; fi
+# if ! checkSymlinkExists "/chemotion/app/config/storage.yml"       ; then exit 1; fi
+# if ! checkSymlinkExists "/chemotion/app/public/assets"            ; then exit 1; fi
+# if ! checkSymlinkExists "/chemotion/app/public/packs"             ; then exit 1; fi
+# if ! checkSymlinkExists "/chemotion/app/public/welcome-message.md"; then exit 1; fi
 
 # check write permissions in folder
 if ! checkFolderIsWritable "/shared/eln"        ; then exit 1; fi
