@@ -9,6 +9,16 @@ checkFolderExists(){
     fi
 }
 
+checkSymlinkExists(){
+    if [[ ! -d $1 ]]; then
+        echo "    Symlink $1 does not exist. Please create it."
+        return 1
+    else
+        echo "    Found symlink $1."
+        return 0
+    fi
+}
+
 checkFolderIsWritable(){
     if [[ ! -w $1 ]]; then
         echo "    Folder $1 has no write permission. Please grant it."
@@ -45,6 +55,19 @@ if ! checkFolderIsWritable "/shared/eln/public" ; then exit 1; fi
 if ! checkFolderIsWritable "/shared/eln/tmp"    ; then exit 1; fi
 if ! checkFolderIsWritable "/shared/eln/uploads"; then exit 1; fi
 
+if ! checkSymlinkExists "/chemotion/app/log"                      ; then exit 1; fi
+if ! checkSymlinkExists "/chemotion/app/tmp"                      ; then exit 1; fi
+if ! checkSymlinkExists "/chemotion/app/uploads"                  ; then exit 1; fi
+if ! checkSymlinkExists "/chemotion/app/config/database.yml"      ; then exit 1; fi
+if ! checkSymlinkExists "/chemotion/app/config/datacollector.yml" ; then exit 1; fi
+if ! checkSymlinkExists "/chemotion/app/config/editors.yml"       ; then exit 1; fi
+if ! checkSymlinkExists "/chemotion/app/config/secrets.yml"       ; then exit 1; fi
+if ! checkSymlinkExists "/chemotion/app/config/storage.yml"       ; then exit 1; fi
+if ! checkSymlinkExists "/chemotion/app/public/assets"            ; then exit 1; fi
+if ! checkSymlinkExists "/chemotion/app/public/packs"             ; then exit 1; fi
+if ! checkSymlinkExists "/chemotion/app/public/welcome-message.md"; then exit 1; fi
+
+[[ -z $USERID ]] && export USERID=1000
 chown -R $USERID:$USERID /shared
 
 echo "Checks for the database:"
