@@ -34,8 +34,8 @@ ${BASEDIR}/setup.sh
 $GIT clone ${BRANCH} https://github.com/ComPlat/chemotion_ELN $REPO
 
 ELNREF=$($GIT rev-parse --short HEAD)
-ELNTAG=$($GIT describe --abbrev=0 --tags)
-BLDREF=$(git --git-dir=${BASEDIR}/.git rev-parse --short HEAD)
+ELNTAG=$($GIT describe --abbrev=0 --tags)""
+BLDREF=$(git --git-dir=${BASEDIR}/.git rev-parse --short HEAD || echo "D0.1")
 BLDTAG=$(git --git-dir=${BASEDIR}/.git describe --abbrev=0 --tags 2>/dev/null || echo "<no tag>")
 echo "Versions: " | $LOG
 echo -e "CHEMOTION_REF=${ELNREF}\nCHEMOTION_TAG=${ELNTAG}\nBUILDSYSTEM_REF=${BLDREF}\nBUILDSYSTEM_TAG=${BLDTAG}" | tee $REPO/.version | sed 's/^/  /g' | $LOG

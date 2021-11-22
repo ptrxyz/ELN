@@ -94,13 +94,19 @@ fi
 
 echo "    Database up and running."
 
-cd /chemotion/app/
-
-bundle exec rake db:migrate
-echo "    Database migrated."
-
-bundle exec rake assets:precompile
-
 cd /chemotion/app
-# bundle exec rails s
-exec passenger start -e production --engine=builtin --address 0.0.0.0 --port 3000
+
+echo "Role: $CONFIG_ROLE"
+if [[ ${CONFIG_ROLE} == "eln" || ${CONFIG_ROLE} == "app" ]]; then 
+    bundle exec rake db:migrate
+    bundle exec rake assets:precompile
+
+    # start ketcher background service if present
+    if [ -f "/chemotion/app/lib/node_service/nodeService.js" ]; then
+        nohup node /chemotion/app/lib/node_service/nodeService.js production >> /chemotion/app/log/node.log 2>&1 &
+    fi
+
+    exec passenger start -e production --engine=builtin --address 0.0.0.0 --port ${CONFIG_PASSENGER_PORT}
+else
+    exec bundle exec bin/delayed_job run
+fi
