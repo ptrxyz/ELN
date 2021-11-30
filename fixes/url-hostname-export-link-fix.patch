@@ -13,3 +13,4 @@ index 9ef2dc6e..8b17ed0b 100644
 +                "http://#{ENV['URL_HOST'] || ENV['HOST'] || 'localhost:3000'}/zip/#{job_id}.#{extname}"
                end
        @expires_at = Time.now + 24.hours
+
