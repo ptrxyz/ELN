@@ -116,7 +116,7 @@ if [[ ${CONFIG_ROLE} == "eln" || ${CONFIG_ROLE} == "app" ]]; then
         nohup node /chemotion/app/lib/node_service/nodeService.js production >> /chemotion/app/log/node.log 2>&1 &
     fi
 
-    exec passenger start -e production --engine=builtin --address 0.0.0.0 --port ${CONFIG_PASSENGER_PORT}
+    exec passenger start -e production --engine=builtin --address 0.0.0.0 --port ${CONFIG_PASSENGER_PORT} --disable-security-update-check
 else
     exec bundle exec bin/delayed_job run
 fi
