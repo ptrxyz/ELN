@@ -105,7 +105,7 @@ echo "    Evaluated configuration file: $db_configfile"
 echo "    Imported profile: $db_profile"
 echo "    Connecting to host: $DB_HOST ..."
 iterator=1
-while ! pg_isready -h $DB_HOST 1>/dev/null 2>&1; do
+while ! pg_isready -h $DB_HOST -U 'postgres' 1>/dev/null 2>&1; do
     ((iterator++))
     echo "    Database instance not ready. Waiting ..."
     sleep 10
