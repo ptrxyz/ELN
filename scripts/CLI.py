@@ -85,6 +85,26 @@ def deploy(name, nodefault):
         runShellScript(["/etc/scripts/landscapeScript.sh", name, "default"])
 
 
+@click.group()
+def database():
+    """Manage database for the ELN"""
+    pass
+
+
+@database.command()
+def dump():
+    """Dump database from the db host"""
+    click.echo(f"Dump database")
+    runShellScript(["/etc/scripts/databaseScript.sh", "dump"])
+
+
+@database.command()
+def load():
+    """Load database dump in the db host"""
+    click.echo(f"Load database")
+    runShellScript(["/etc/scripts/databaseScript.sh", "load"])
+
+
 @click.command()
 @click.option("--destination", help="Destination path for the backup.")
 def backup(destination):
@@ -186,6 +206,7 @@ def info():
 
 cli.add_command(init)
 cli.add_command(landscape)
+cli.add_command(database)
 cli.add_command(backup)
 cli.add_command(upgrade)
 cli.add_command(startEln)
