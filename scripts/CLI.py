@@ -92,17 +92,19 @@ def database():
 
 
 @database.command()
-def dump():
-    """Dump database from the db host"""
+@click.option("--host", default="db", help="Database host")
+def dump(host):
+    """Dump database from the host"""
     click.echo(f"Dump database")
-    runShellScript(["/etc/scripts/databaseScript.sh", "dump"])
+    runShellScript(["/etc/scripts/databaseScript.sh", "dump", host])
 
 
 @database.command()
-def load():
-    """Load database dump in the db host"""
+@click.option("--host", default="db", help="Database host")
+def load(host):
+    """Load database dump into the host"""
     click.echo(f"Load database")
-    runShellScript(["/etc/scripts/databaseScript.sh", "load"])
+    runShellScript(["/etc/scripts/databaseScript.sh", "load", host])
 
 
 @click.command()
