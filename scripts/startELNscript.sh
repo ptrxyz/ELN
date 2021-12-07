@@ -97,12 +97,27 @@ echo "    Database up and running."
 cd /chemotion/app
 
 for file in $(ls /shared/eln/config/); do
-    if [ -f config/${file} ]; then
-        rm -f config/${file}
-        ln -s /shared/eln/config/${file} config/${file}
-    fi
-    if ! [ -L config/${file} ]; then
-        ln -s /shared/eln/config/${file} config/${file}
+    if [ -d /shared/eln/config/${file} ]; then
+        if ! [ -d config/${file} ]; then
+            mkdir -p config/${file}
+        fi
+        for file2 in $(ls /shared/eln/config/${file}); do
+            if [ -f config/${file}/${file2} ]; then
+                rm -f config/${file}/${file2}
+                ln -s /shared/eln/config/${file}/${file2} config/${file}/${file2}
+            fi
+            if ! [ -L config/${file}/${file2} ]; then
+                ln -s /shared/eln/config/${file}/${file2} config/${file}/${file2}
+            fi
+        done
+    else
+        if [ -f config/${file} ]; then
+            rm -f config/${file}
+            ln -s /shared/eln/config/${file} config/${file}
+        fi
+        if ! [ -L config/${file} ]; then
+            ln -s /shared/eln/config/${file} config/${file}
+        fi
     fi
 done
 
