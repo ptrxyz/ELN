@@ -66,4 +66,12 @@ folders:
         item: 'public/images/reactions'
     item15:
         name: 'images research plans'
-        item: 'public/images/research_plans'    
+        item: 'public/images/research_plans'
+createOnlyShared:
+    item1:
+        name: 'config'
+        item: 'config'
+createOnlyProject:
+    item1:
+        name: 'database data'
+        item: 'db-data'
