@@ -79,7 +79,8 @@ RUN find /ruby/lib/ruby/gems/ /node/lib/node_modules -iname '*.so' -type f -exec
 RUN mkdir -p /shared /template 
 
 # clean up some unnecessary files
-RUN find /template /chemotion/app -iname '*.gitlab' -print -delete -or -iname '*.travis' -print -delete
+# removed because https://github.com/ComPlat/chemotion_ELN/commit/ff21b426bed4f48d878931ae17ec495fc92fd00e caused error with find
+# RUN find /template /chemotion/app -iname '*.gitlab' -print -delete -or -iname '*.travis' -print -delete
 
 COPY ./defaultLandscape /template/defaultLandscape
 
