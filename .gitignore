@@ -3,3 +3,4 @@ setup.sh
 shared/
 src/
 geckodriver.log
+*.pyc
