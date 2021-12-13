@@ -56,6 +56,16 @@ class LoginTest(unittest.TestCase):
         home_page.click_eln()
         assert "Chemotion" in self.driver.title
 
+    def test_edit_close_click(self):
+        home_page = HomePage(self.driver)
+        home_page.click_edit()
+        home_page.click_edit_close()
+
+    def test_edit_cancel_click(self):
+        home_page = HomePage(self.driver)
+        home_page.click_edit()
+        home_page.click_edit_cancel()
+
     @classmethod
     def tearDownClass(cls):
         cls.driver.close()

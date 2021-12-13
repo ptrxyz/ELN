@@ -13,7 +13,9 @@ class HomePage():
         self.about_button_xpath = '//*[@id="Home"]/div/div/div[1]/nav/div/div[1]/li/ul/li[7]/a'
         self.eln_button_xpath = '//*[@id="Home"]/div/div/div[1]/nav/div/div[1]/li/ul/li[5]/a'
         self.signup_button_xpath = '//*[@id="Home"]/div/div/div[1]/nav/div/div[2]/ul/li/a'
-        self.back_link_text = "Back"
+        self.edit_button_classname = "btn-primary"
+        self.close_button_classname = "close"
+        self.cancel_button_classname = "btn-warning"
 
     def enter_username(self, username):
         elem = self.driver.find_element(By.NAME, self.username_textbox_name)
@@ -51,3 +53,15 @@ class HomePage():
         elem = self.driver.find_element(By.XPATH, self.eln_button_xpath)
         elem.click()
         self.driver.implicitly_wait(5)
+
+    def click_edit(self):
+        elem = self.driver.find_element(By.CLASS_NAME, self.edit_button_classname)
+        elem.click()
+
+    def click_edit_close(self):
+        elem = self.driver.find_element(By.CLASS_NAME, self.close_button_classname)
+        elem.click()
+
+    def click_edit_cancel(self):
+        elem = self.driver.find_element(By.CLASS_NAME, self.cancel_button_classname)
+        elem.click()
