@@ -3,6 +3,7 @@ from selenium.common.exceptions import NoSuchElementException
 
 import unittest
 
+from seleniumTests.POM.aboutPage import AboutPage
 from seleniumTests.POM.homePage import HomePage
 from seleniumTests.POM.signupPage import SignupPage
 from seleniumTests.POM.topFrame import TopFrame
@@ -22,8 +23,10 @@ class LoginTest(unittest.TestCase):
         
     def test_about_click(self):
         home_page = HomePage(self.driver)
-        version_number = home_page.click_about()
-        home_page.click_back()
+        home_page.click_about()
+        about_page = AboutPage(self.driver)
+        version_number = about_page.read_version()
+        about_page.click_back()
         assert "1.0.3" in version_number
         assert "Chemotion" in self.driver.title
 

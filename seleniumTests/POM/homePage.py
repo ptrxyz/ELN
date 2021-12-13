@@ -15,9 +15,6 @@ class HomePage():
         self.signup_button_xpath = '//*[@id="Home"]/div/div/div[1]/nav/div/div[2]/ul/li/a'
         self.back_link_text = "Back"
 
-        # about
-        self.version_text = "/html/body/div/div/h3[1]"
-
     def enter_username(self, username):
         elem = self.driver.find_element(By.NAME, self.username_textbox_name)
         elem.clear()
@@ -42,9 +39,6 @@ class HomePage():
         elem = self.driver.find_element(By.XPATH, self.about_button_xpath)
         elem.click()
         self.driver.implicitly_wait(5)
-        elem = self.driver.find_element(By.XPATH, self.version_text)
-        versionNumber = elem.text
-        return versionNumber
 
     def click_signup(self):
         elem = self.driver.find_element(By.XPATH, self.signup_button_xpath)
@@ -57,7 +51,3 @@ class HomePage():
         elem = self.driver.find_element(By.XPATH, self.eln_button_xpath)
         elem.click()
         self.driver.implicitly_wait(5)
-
-    def click_back(self):
-        elem = self.driver.find_element(By.LINK_TEXT, self.back_link_text)
-        elem.click()
