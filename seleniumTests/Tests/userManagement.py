@@ -2,6 +2,10 @@ from selenium import webdriver
 
 import unittest
 import time
+import os
+import sys
+file_path = os.path.abspath(os.path.join(os.path.dirname(__file__),'../..'))
+sys.path.append(file_path)
 
 from seleniumTests.POM.adminPage import AdminPage
 from seleniumTests.POM.homePage import HomePage
@@ -19,7 +23,6 @@ class LoginTest(unittest.TestCase):
     def setUp(cls):
         cls.driver.get("http://localhost:4000/home")
         cls.driver.implicitly_wait(10)
-        
 
     def enter_login_data(self):
         assert "Chemotion" in self.driver.title

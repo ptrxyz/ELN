@@ -16,6 +16,10 @@ class HomePage():
         self.edit_button_classname = "btn-primary"
         self.close_button_classname = "close"
         self.cancel_button_classname = "btn-warning"
+        self.export_dropdown_button_id = "export-dropdown"
+        self.import_button_xpath = '//*[@id="app"]/div/div[1]/nav/div/ul/div[3]/div[1]/div[1]/ul/li[7]/a'
+        self.import_file_select_button_xpath = '/html/body/div[2]/div[2]/div/div/div[2]/div/div[1]/input'
+        self.import_import_button_xpath = '/html/body/div[2]/div[2]/div/div/div[2]/div/div[2]/button[2]'
 
     def enter_username(self, username):
         elem = self.driver.find_element(By.NAME, self.username_textbox_name)
@@ -64,4 +68,22 @@ class HomePage():
 
     def click_edit_cancel(self):
         elem = self.driver.find_element(By.CLASS_NAME, self.cancel_button_classname)
+        elem.click()
+
+    def click_import(self):
+        elem = self.driver.find_element(By.ID, self.export_dropdown_button_id)
+        elem.click()
+        elem = self.driver.find_element(By.XPATH, self.import_button_xpath)
+        elem.click()
+    
+    def enter_path_import_file_select(self, path):
+        elem = self.driver.find_element(By.XPATH, self.import_file_select_button_xpath)
+        elem.send_keys(path)
+
+    def click_import_import(self):
+        elem = self.driver.find_element(By.XPATH, self.import_import_button_xpath)
+        elem.click()
+
+    def click_import_close(self):
+        elem = self.driver.find_element(By.CLASS_NAME, self.close_button_classname)
         elem.click()

@@ -2,6 +2,10 @@ from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 
 import unittest
+import os
+import sys
+file_path = os.path.abspath(os.path.join(os.path.dirname(__file__),'../..'))
+sys.path.append(file_path)
 
 from seleniumTests.POM.aboutPage import AboutPage
 from seleniumTests.POM.homePage import HomePage
