@@ -13,7 +13,8 @@ class AdminPage():
         self.firstname_textbox_id = "formControlFirstName"
         self.lastname_textbox_id = "formControlLastName"
         self.abbreviation_textbox_id = "formControlAbbr"
-        self.create_button_xpath = "/html/body/div[2]/div[2]/div/div/div[2]/div/form/div[9]/div/button[1]"
+#         self.create_button_xpath = "/html/body/div[2]/div[2]/div/div/div[2]/div/form/div[9]/div/button[1]"
+        self.create_button_xpath = '//*[@id="createUserTabs-pane-singleUser"]/form/div[8]/div/button'
         self.close_button_classname = "close"
 
     def enter_user_data(self, email, password, firstname, lastname, abbreviation):

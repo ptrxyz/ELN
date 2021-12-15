@@ -14,6 +14,12 @@ from seleniumTests.POM.topFrame import TopFrame
 
 class LoginTest(unittest.TestCase):
 
+    email_address = "new.user@provider.edu"
+    password = "asdasdasd"
+    first_name = "new"
+    last_name = "user"
+    abbreviation = "neu"
+
     @classmethod
     def setUpClass(cls):
         cls.driver = webdriver.Firefox()
@@ -45,7 +51,7 @@ class LoginTest(unittest.TestCase):
         home_page = HomePage(self.driver)
         home_page.click_signup()
         signup_page = SignupPage(self.driver)
-        signup_page.enter_user_data("new.user@provider.edu", "asdasdasd", "new", "user", "neu")
+        signup_page.enter_user_data(self.email_address, self.password, self.first_name, self.last_name, self.abbreviation)
         signup_page.click_signup()
         self.driver.implicitly_wait(5)
         top_frame = TopFrame(self.driver)

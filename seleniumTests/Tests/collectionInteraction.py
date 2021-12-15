@@ -49,8 +49,9 @@ class LoginTest(unittest.TestCase):
         try:
             home_page.click_export_checkbox()
         except NoSuchElementException:
-            time.sleep(5)
             home_page.click_export_close()
+            time.sleep(20)
+            self.driver.refresh()
             home_page.click_export()
             home_page.click_export_checkbox()
         home_page.click_export_export()

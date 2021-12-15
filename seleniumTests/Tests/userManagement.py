@@ -13,6 +13,12 @@ from seleniumTests.POM.topFrame import TopFrame
 
 class LoginTest(unittest.TestCase):
 
+    email_address = "test.user@provider.edu"
+    password = "asdasdasd"
+    first_name = "test"
+    last_name = "user"
+    abbreviation = "teu"
+
     @classmethod
     def setUpClass(cls):
         cls.driver = webdriver.Firefox()
@@ -28,8 +34,8 @@ class LoginTest(unittest.TestCase):
         assert "Chemotion" in self.driver.title
          
         home_page = HomePage(self.driver)
-        home_page.enter_username("test.user@provider.edu")
-        home_page.enter_password("asdasdasd")
+        home_page.enter_username(self.email_address)
+        home_page.enter_password(self.password)
 
     def enter_login_data_admin(self):
         assert "Chemotion" in self.driver.title
@@ -46,7 +52,7 @@ class LoginTest(unittest.TestCase):
         admin_page = AdminPage(self.driver)
         admin_page.click_user_management_link()
         admin_page.click_add_user_button()
-        admin_page.enter_user_data("test.user@provider.edu", "asdasdasd", "test", "user", "teu")
+        admin_page.enter_user_data(self.email_address, self.password, self.first_name, self.last_name, self.abbreviation)
         admin_page.click_create()
         admin_page.click_close()
 
