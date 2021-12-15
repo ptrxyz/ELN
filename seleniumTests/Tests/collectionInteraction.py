@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
 
 import unittest
 import time
@@ -25,21 +26,39 @@ class LoginTest(unittest.TestCase):
         home_page = HomePage(cls.driver)
         home_page.click_login()
 
-    def test_import_click(self):
+    def test_00_import_click(self):
         home_page = HomePage(self.driver)
         home_page.click_import()
         home_page.click_import_close()
 
-    def test_import_file_select_click(self):
+    def test_00_import_file_select_click(self):
         home_page = HomePage(self.driver)
         home_page.click_import()
         home_page.enter_path_import_file_select("/home/benjamin/Downloads/demo.zip")
         home_page.click_import_import()
-        time.sleep(5)
+        time.sleep(15)
+
+    def test_export_click(self):
+        home_page = HomePage(self.driver)
+        home_page.click_export()
+        home_page.click_export_close()       
+
+    def test_export_collection_select_click(self):
+        home_page = HomePage(self.driver)
+        home_page.click_export()
+        try:
+            home_page.click_export_checkbox()
+        except NoSuchElementException:
+            time.sleep(5)
+            home_page.click_export_close()
+            home_page.click_export()
+            home_page.click_export_checkbox()
+        home_page.click_export_export()
+        time.sleep(2)
 
     @classmethod
     def tearDownClass(cls):
-        time.sleep(2)
+        time.sleep(15)
         top_frame = TopFrame(cls.driver)
         top_frame.click_logout()
         cls.driver.close()
