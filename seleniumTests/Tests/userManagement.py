@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
 
 import unittest
 import time
@@ -53,7 +54,10 @@ class LoginTest(unittest.TestCase):
         admin_page.click_user_management_link()
         admin_page.click_add_user_button()
         admin_page.enter_user_data(self.email_address, self.password, self.first_name, self.last_name, self.abbreviation)
-        admin_page.click_create()
+        try:
+            admin_page.click_create()
+        except NoSuchElementException:
+            admin_page.click_create_old()
         admin_page.click_close()
 
     def test_login_valid_by_return_key(self):
