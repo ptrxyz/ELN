@@ -4,6 +4,7 @@ from selenium.common.exceptions import NoSuchElementException
 import unittest
 import os
 import sys
+import time
 file_path = os.path.abspath(os.path.join(os.path.dirname(__file__),'../..'))
 sys.path.append(file_path)
 
@@ -73,6 +74,36 @@ class LoginTest(unittest.TestCase):
         top_frame = TopFrame(self.driver)
         top_frame.click_edit()
         top_frame.click_edit_cancel()
+
+    def test_0006_chemotion_repository_click(self):
+        top_frame = TopFrame(self.driver)
+        top_frame.click_chemotion_repository()
+        assert "Chemotion" in self.driver.title
+        self.driver.switch_to.window(self.driver.window_handles[1])
+        time.sleep(1)
+        assert "Chemotion | Chemotion" in self.driver.title
+        self.driver.close()
+        self.driver.switch_to.window(self.driver.window_handles[0])
+
+    def test_0007_complat_click(self):
+        top_frame = TopFrame(self.driver)
+        top_frame.click_complat()
+        assert "Chemotion" in self.driver.title
+        self.driver.switch_to.window(self.driver.window_handles[1])
+        time.sleep(1)
+        assert "KIT" in self.driver.title
+        self.driver.close()
+        self.driver.switch_to.window(self.driver.window_handles[0])
+
+    def test_0008_complat_on_github_click(self):
+        top_frame = TopFrame(self.driver)
+        top_frame.click_complat_on_github()
+        assert "Chemotion" in self.driver.title
+        self.driver.switch_to.window(self.driver.window_handles[1])
+        time.sleep(1)
+        assert "ComPlat" in self.driver.title
+        self.driver.close()
+        self.driver.switch_to.window(self.driver.window_handles[0])
 
     @classmethod
     def tearDownClass(cls):
