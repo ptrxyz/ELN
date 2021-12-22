@@ -9,7 +9,6 @@ file_path = os.path.abspath(os.path.join(os.path.dirname(__file__),'../..'))
 sys.path.append(file_path)
 
 from seleniumTests.POM.adminPage import AdminPage
-from seleniumTests.POM.homePage import HomePage
 from seleniumTests.POM.topFrame import TopFrame
 
 class LoginTest(unittest.TestCase):
@@ -29,26 +28,26 @@ class LoginTest(unittest.TestCase):
     @classmethod
     def setUp(cls):
         cls.driver.get("http://localhost:4000/home")
-        cls.driver.implicitly_wait(10)
+        cls.driver.implicitly_wait(5)
 
     def enter_login_data(self):
         assert "Chemotion" in self.driver.title
          
-        home_page = HomePage(self.driver)
-        home_page.enter_username(self.email_address)
-        home_page.enter_password(self.password)
+        top_frame = TopFrame(self.driver)
+        top_frame.enter_username(self.email_address)
+        top_frame.enter_password(self.password)
 
     def enter_login_data_admin(self):
         assert "Chemotion" in self.driver.title
 
-        home_page = HomePage(self.driver)
-        home_page.enter_username("ADM")
-        home_page.enter_password("PleaseChangeYourPassword")        
+        top_frame = TopFrame(self.driver)
+        top_frame.enter_username("ADM")
+        top_frame.enter_password("PleaseChangeYourPassword")        
 
-    def test_create_new_user(self):
+    def test_0000_create_new_user(self):
         self.enter_login_data_admin()
-        home_page = HomePage(self.driver)
-        home_page.press_return_login()
+        top_frame = TopFrame(self.driver)
+        top_frame.press_return_login()
         assert "Chemotion" in self.driver.title
         admin_page = AdminPage(self.driver)
         admin_page.click_user_management_link()
@@ -60,16 +59,16 @@ class LoginTest(unittest.TestCase):
             admin_page.click_create_old()
         admin_page.click_close()
 
-    def test_login_valid_by_return_key(self):
+    def test_0001_login_valid_by_return_key(self):
         self.enter_login_data()
-        home_page = HomePage(self.driver)
-        home_page.press_return_login()
+        top_frame = TopFrame(self.driver)
+        top_frame.press_return_login()
         assert "Chemotion" in self.driver.title
 
-    def test_login_valid_by_button_click(self):
+    def test_0002_login_valid_by_button_click(self):
         self.enter_login_data()
-        home_page = HomePage(self.driver)
-        home_page.click_login()
+        top_frame = TopFrame(self.driver)
+        top_frame.click_login()
         assert "Chemotion" in self.driver.title
 
     @classmethod
