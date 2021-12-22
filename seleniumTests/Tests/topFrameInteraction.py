@@ -78,7 +78,6 @@ class LoginTest(unittest.TestCase):
     def test_0006_chemotion_repository_click(self):
         top_frame = TopFrame(self.driver)
         top_frame.click_chemotion_repository()
-        assert "Chemotion" in self.driver.title
         self.driver.switch_to.window(self.driver.window_handles[1])
         time.sleep(1)
         assert "Chemotion | Chemotion" in self.driver.title
@@ -88,7 +87,6 @@ class LoginTest(unittest.TestCase):
     def test_0007_complat_click(self):
         top_frame = TopFrame(self.driver)
         top_frame.click_complat()
-        assert "Chemotion" in self.driver.title
         self.driver.switch_to.window(self.driver.window_handles[1])
         time.sleep(1)
         assert "KIT" in self.driver.title
@@ -98,7 +96,6 @@ class LoginTest(unittest.TestCase):
     def test_0008_complat_on_github_click(self):
         top_frame = TopFrame(self.driver)
         top_frame.click_complat_on_github()
-        assert "Chemotion" in self.driver.title
         self.driver.switch_to.window(self.driver.window_handles[1])
         time.sleep(1)
         assert "ComPlat" in self.driver.title
