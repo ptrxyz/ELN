@@ -13,6 +13,11 @@ class MainFrame():
         self.export_button_xpath = '//*[@id="app"]/div/div[1]/nav/div/ul/div[3]/div[1]/div[1]/ul/li[6]/a'
         self.export_checkbox_xpath = '/html/body/div[2]/div[2]/div/div/div[2]/div/div[2]/ul/li[1]/label'
         self.export_export_button_xpath = '//*[@id="md-export-dropdown"]/span'
+        self.my_data_button_id = "tree-id-My Data"
+        self.sample_link_xpath = '//*[@id="tabList-pane-0"]/div/div[2]/table/tbody[1]/tr[2]/td[2]'
+        self.analyses_tab_id = "SampleDetailsXTab-tab-analyses"
+        self.spectra_editor_button_classname = "fa-area-chart"
+        self.spectra_close_button_classname = "button-right.btn.btn-sm.btn-danger"
 
     def click_import(self):
         elem = self.driver.find_element(By.ID, self.export_dropdown_button_id)
@@ -48,4 +53,24 @@ class MainFrame():
 
     def click_export_close(self):
         elem = self.driver.find_element(By.CLASS_NAME, self.close_button_classname)
+        elem.click()
+
+    def click_my_data_button(self):
+        elem = self.driver.find_element(By.ID, self.my_data_button_id)
+        elem.click()
+
+    def click_sample_link(self):
+        elem = self.driver.find_element(By.XPATH, self.sample_link_xpath)
+        elem.click()
+
+    def click_analyses_tab(self):
+        elem = self.driver.find_element(By.ID, self.analyses_tab_id)
+        elem.click()
+
+    def click_spectra_editor_button(self):
+        elem = self.driver.find_element(By.CLASS_NAME, self.spectra_editor_button_classname)
+        elem.click()
+
+    def click_spectra_close_button(self):
+        elem = self.driver.find_element(By.CLASS_NAME, self.spectra_close_button_classname)
         elem.click()
