@@ -16,8 +16,13 @@ class MainFrame():
         self.my_data_button_id = "tree-id-My Data"
         self.sample_link_xpath = '//*[@id="tabList-pane-0"]/div/div[2]/table/tbody[1]/tr[2]/td[2]'
         self.analyses_tab_id = "SampleDetailsXTab-tab-analyses"
+        self.qc_tab_id = "SampleDetailsXTab-tab-qc_curation"
+        self.literature_tab_id = "SampleDetailsXTab-tab-literature"
+        self.results_tab_id = "SampleDetailsXTab-tab-results"
+        self.properties_tab_id = "SampleDetailsXTab-tab-properties"
         self.spectra_editor_button_classname = "fa-area-chart"
         self.spectra_close_button_classname = "button-right.btn.btn-sm.btn-danger"
+        self.sample_close_button_classname = "fa.fa-times"
 
     def click_import(self):
         elem = self.driver.find_element(By.ID, self.export_dropdown_button_id)
@@ -67,10 +72,30 @@ class MainFrame():
         elem = self.driver.find_element(By.ID, self.analyses_tab_id)
         elem.click()
 
+    def click_qc_tab(self):
+        elem = self.driver.find_element(By.ID, self.qc_tab_id)
+        elem.click()
+
+    def click_literature_tab(self):
+        elem = self.driver.find_element(By.ID, self.literature_tab_id)
+        elem.click()
+
+    def click_results_tab(self):
+        elem = self.driver.find_element(By.ID, self.results_tab_id)
+        elem.click()
+
+    def click_properties_tab(self):
+        elem = self.driver.find_element(By.ID, self.properties_tab_id)
+        elem.click()
+
     def click_spectra_editor_button(self):
         elem = self.driver.find_element(By.CLASS_NAME, self.spectra_editor_button_classname)
         elem.click()
 
     def click_spectra_close_button(self):
         elem = self.driver.find_element(By.CLASS_NAME, self.spectra_close_button_classname)
+        elem.click()
+
+    def click_sample_close_button(self):
+        elem = self.driver.find_element(By.CLASS_NAME, self.sample_close_button_classname)
         elem.click()

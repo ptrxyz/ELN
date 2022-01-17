@@ -65,7 +65,7 @@ class LoginTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        time.sleep(15)
+        time.sleep(5)
         top_frame = TopFrame(cls.driver)
         top_frame.click_logout()
         cls.driver.close()
