@@ -59,6 +59,21 @@ class LoginTest(unittest.TestCase):
         home_page = MainFrame(self.driver)
         home_page.click_properties_tab()
 
+    def test_0006_edit_molecule_in_sample(self):
+        home_page = MainFrame(self.driver)
+        home_page.click_sample_edit_molecule_button()
+        time.sleep(1)
+        home_page.click_sample_edit_molecule_close_button()
+        time.sleep(1)
+
+    def test_0007_enter_name_in_sample(self):
+        home_page = MainFrame(self.driver)
+        time_string = time.strftime("%Y%m%d-%H%M%S")
+        home_page.enter_sample_name("TestSampleName" + time_string)
+        home_page.save_sample()
+        time.sleep(2)
+        assert time_string in home_page.get_sample_name_from_label()
+
     @classmethod
     def tearDown(cls):
         home_page = MainFrame(cls.driver)

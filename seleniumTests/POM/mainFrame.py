@@ -23,6 +23,11 @@ class MainFrame():
         self.spectra_editor_button_classname = "fa-area-chart"
         self.spectra_close_button_classname = "button-right.btn.btn-sm.btn-danger"
         self.sample_close_button_classname = "fa.fa-times"
+        self.sample_edit_molecule_button_xpath = '//*[@id="SampleDetailsXTab-pane-properties"]/span[1]/div/table/tbody/tr[1]/td/div/div[1]/div[1]/span/span/button'
+        self.sample_name_textbox_id = "txinput_name"
+        self.sample_save_button_classname = "fa.fa-floppy-o"
+        self.sample_name_label_xpath = '//*[@id="tabList-pane-0"]/div/div[2]/table/tbody[1]/tr[2]/td[2]/span/span[2]'
+
 
     def click_import(self):
         elem = self.driver.find_element(By.ID, self.export_dropdown_button_id)
@@ -99,3 +104,24 @@ class MainFrame():
     def click_sample_close_button(self):
         elem = self.driver.find_element(By.CLASS_NAME, self.sample_close_button_classname)
         elem.click()
+
+    def click_sample_edit_molecule_button(self):
+        elem = self.driver.find_element(By.XPATH, self.sample_edit_molecule_button_xpath)
+        elem.click()
+
+    def click_sample_edit_molecule_close_button(self):
+        elem = self.driver.find_element(By.CLASS_NAME, self.close_button_classname)
+        elem.click()
+
+    def enter_sample_name(self, name):
+        elem = self.driver.find_element(By.ID, self.sample_name_textbox_id)
+        elem.clear()
+        elem.send_keys(name)
+
+    def get_sample_name_from_label(self):
+        elem = self.driver.find_element(By.XPATH, self.sample_name_label_xpath)
+        return elem.text
+
+    def save_sample(self):
+        elem = self.driver.find_element(By.CLASS_NAME, self.sample_save_button_classname)
+        elem.click()        
