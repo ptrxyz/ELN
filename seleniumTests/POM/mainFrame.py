@@ -27,6 +27,8 @@ class MainFrame():
         self.sample_name_textbox_id = "txinput_name"
         self.sample_save_button_classname = "fa.fa-floppy-o"
         self.sample_name_label_xpath = '//*[@id="tabList-pane-0"]/div/div[2]/table/tbody[1]/tr[2]/td[2]/span/span[2]'
+        self.sample_boiling_temperature_textbox_xpath = '//*[@id="SampleDetailsXTab-pane-properties"]/span[1]/div/table/tbody/tr[2]/td/div/div[3]/div/span/input'
+        self.sample_melting_temperature_textbox_xpath = '//*[@id="SampleDetailsXTab-pane-properties"]/span[1]/div/table/tbody/tr[2]/td/div/div[4]/div/span/input'
 
 
     def click_import(self):
@@ -124,4 +126,22 @@ class MainFrame():
 
     def save_sample(self):
         elem = self.driver.find_element(By.CLASS_NAME, self.sample_save_button_classname)
-        elem.click()        
+        elem.click()
+
+    def enter_boiling_temperature(self, temperature):
+        elem = self.driver.find_element(By.XPATH, self.sample_boiling_temperature_textbox_xpath)
+        elem.clear()
+        elem.send_keys(temperature)
+
+    def enter_melting_temperature(self, temperature):
+        elem = self.driver.find_element(By.XPATH, self.sample_melting_temperature_textbox_xpath)
+        elem.clear()
+        elem.send_keys(temperature)
+
+    def get_boiling_temperature(self):
+        elem = self.driver.find_element(By.XPATH, self.sample_boiling_temperature_textbox_xpath)
+        return elem.get_attribute("value")
+
+    def get_melting_temperature(self):
+        elem = self.driver.find_element(By.XPATH, self.sample_melting_temperature_textbox_xpath)
+        return elem.get_attribute("value")

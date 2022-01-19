@@ -74,6 +74,18 @@ class LoginTest(unittest.TestCase):
         time.sleep(2)
         assert time_string in home_page.get_sample_name_from_label()
 
+    def test_0008_enter_temperatures_in_sample(self):
+        home_page = MainFrame(self.driver)
+        boiling_temperature = time.strftime("%M%S")
+        melting_temperature = time.strftime("%S%M")
+        home_page.enter_boiling_temperature(boiling_temperature)
+        home_page.enter_melting_temperature(melting_temperature)
+        home_page.save_sample()
+        time.sleep(2)
+        home_page.click_sample_link()
+        assert boiling_temperature in home_page.get_boiling_temperature()
+        assert melting_temperature in home_page.get_melting_temperature()
+
     @classmethod
     def tearDown(cls):
         home_page = MainFrame(cls.driver)
