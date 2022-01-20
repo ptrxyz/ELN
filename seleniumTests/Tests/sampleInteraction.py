@@ -49,7 +49,10 @@ class LoginTest(unittest.TestCase):
 
     def test_0003_literature_tab_in_sample(self):
         home_page = MainFrame(self.driver)
-        home_page.click_literature_tab()
+        try:
+            home_page.click_literature_tab()
+        except NoSuchElementException:
+            home_page.click_references_tab()
 
     def test_0004_results_tab_in_sample(self):
         home_page = MainFrame(self.driver)

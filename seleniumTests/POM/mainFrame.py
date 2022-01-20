@@ -17,6 +17,7 @@ class MainFrame():
         self.sample_link_xpath = '//*[@id="tabList-pane-0"]/div/div[2]/table/tbody[1]/tr[2]/td[2]'
         self.analyses_tab_id = "SampleDetailsXTab-tab-analyses"
         self.qc_tab_id = "SampleDetailsXTab-tab-qc_curation"
+        self.references_tab_id = "SampleDetailsXTab-tab-references"
         self.literature_tab_id = "SampleDetailsXTab-tab-literature"
         self.results_tab_id = "SampleDetailsXTab-tab-results"
         self.properties_tab_id = "SampleDetailsXTab-tab-properties"
@@ -85,6 +86,10 @@ class MainFrame():
 
     def click_literature_tab(self):
         elem = self.driver.find_element(By.ID, self.literature_tab_id)
+        elem.click()
+
+    def click_references_tab(self):
+        elem = self.driver.find_element(By.ID, self.references_tab_id)
         elem.click()
 
     def click_results_tab(self):
