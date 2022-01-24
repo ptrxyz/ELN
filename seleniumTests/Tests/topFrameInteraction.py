@@ -49,7 +49,7 @@ class LoginTest(unittest.TestCase):
         about_page = AboutPage(self.driver)
         version_number = about_page.read_version()
         about_page.click_back()
-        assert "1.0.3" in version_number
+        assert "1.1.0" in version_number
         assert "Chemotion" in self.driver.title
 
     def test_0001_signup_click(self):

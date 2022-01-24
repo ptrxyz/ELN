@@ -28,6 +28,7 @@ class LoginTest(unittest.TestCase):
     def test_0000_import_click(self):
         home_page = MainFrame(self.driver)
         home_page.click_import()
+        time.sleep(3)
         home_page.click_import_close()
 
     def test_0001_import_file_select_click(self):
@@ -65,7 +66,7 @@ class LoginTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        time.sleep(5)
+        time.sleep(15)
         top_frame = TopFrame(cls.driver)
         top_frame.click_logout()
         cls.driver.close()
