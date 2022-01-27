@@ -10,14 +10,15 @@ sys.path.append(file_path)
 
 from seleniumTests.POM.adminPage import AdminPage
 from seleniumTests.POM.topFrame import TopFrame
+#from seleniumTests.POM.User import User
 
 class LoginTest(unittest.TestCase):
 
-    email_address = "test.user@provider.edu"
-    password = "asdasdasd"
-    first_name = "test"
-    last_name = "user"
-    abbreviation = "teu"
+    email_address = "chemotion_user_0001@chemotion.edu"
+    password = "20b83105a867b20719e265839351f233"
+    first_name = "chemotion_user"
+    last_name = "0001"
+    abbreviation = "cu1"
 
     @classmethod
     def setUpClass(cls):
