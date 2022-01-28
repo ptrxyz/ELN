@@ -24,21 +24,16 @@ class LoginPage():
         elem.send_keys(password)
 
     def click_login(self):
-        elem = self.driver.find_element(By.CLASS_NAME, self.login_button_class_name)
-        elem.click()        
+        self.driver.find_element(By.CLASS_NAME, self.login_button_class_name).click()        
 
     def click_sign_up(self):
-        elem = self.driver.find_element(By.LINK_TEXT, self.sign_up_link_text)
-        elem.click()
+        self.driver.find_element(By.LINK_TEXT, self.sign_up_link_text).click()
 
     def click_forgot_password(self):
-        elem = self.driver.find_element(By.LINK_TEXT, self.forgot_password_link_text)
-        elem.click()
+        self.driver.find_element(By.LINK_TEXT, self.forgot_password_link_text).click()
 
     def click_missing_confirmation(self):
-        elem = self.driver.find_element(By.LINK_TEXT, self.missing_confirmation_link_text)
-        elem.click()
+        self.driver.find_element(By.LINK_TEXT, self.missing_confirmation_link_text).click()
 
     def click_back(self):
-        elem = self.driver.find_element(By.LINK_TEXT, self.back_link_text)
-        elem.click()
+        self.driver.find_element(By.LINK_TEXT, self.back_link_text).click()

@@ -18,24 +18,24 @@ class AdminPage():
         self.close_button_classname = "close"
 
     def enter_user_data(self, email, password, firstname, lastname, abbreviation):
-        elem = self.driver.find_element(By.ID, self.email_textbox_id).send_keys(email)        
-        elem = self.driver.find_element(By.ID, self.password_textbox_id).send_keys(password)        
-        elem = self.driver.find_element(By.ID, self.passwordconfirmation_textbox_id).send_keys(password)        
-        elem = self.driver.find_element(By.ID, self.firstname_textbox_id).send_keys(firstname)        
-        elem = self.driver.find_element(By.ID, self.lastname_textbox_id).send_keys(lastname)        
-        elem = self.driver.find_element(By.ID, self.abbreviation_textbox_id).send_keys(abbreviation)        
+        self.driver.find_element(By.ID, self.email_textbox_id).send_keys(email)        
+        self.driver.find_element(By.ID, self.password_textbox_id).send_keys(password)        
+        self.driver.find_element(By.ID, self.passwordconfirmation_textbox_id).send_keys(password)        
+        self.driver.find_element(By.ID, self.firstname_textbox_id).send_keys(firstname)        
+        self.driver.find_element(By.ID, self.lastname_textbox_id).send_keys(lastname)        
+        self.driver.find_element(By.ID, self.abbreviation_textbox_id).send_keys(abbreviation)        
 
     def click_user_management_link(self):
-        elem = self.driver.find_element(By.LINK_TEXT,self.usermanagement_link_text).click()        
+        self.driver.find_element(By.LINK_TEXT,self.usermanagement_link_text).click()        
 
     def click_add_user_button(self):
-        elem = self.driver.find_element(By.CLASS_NAME,self.add_user_button_classname).click()        
+        self.driver.find_element(By.CLASS_NAME,self.add_user_button_classname).click()        
 
     def click_create(self):
-        elem = self.driver.find_element(By.XPATH, self.create_button_xpath).click()        
+        self.driver.find_element(By.XPATH, self.create_button_xpath).click()        
 
     def click_create_old(self):
-        elem = self.driver.find_element(By.XPATH, self.create_button_old_xpath).click()        
+        self.driver.find_element(By.XPATH, self.create_button_old_xpath).click()        
 
     def click_close(self):
-        elem = self.driver.find_element(By.CLASS_NAME, self.close_button_classname).click()
+        self.driver.find_element(By.CLASS_NAME, self.close_button_classname).click()

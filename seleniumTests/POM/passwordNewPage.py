@@ -13,23 +13,16 @@ class PasswordNewPage():
         self.error_message_label_xpath = '//*[@id="error_explanation"]/ul/li'
 
     def enter_email(self, email):
-        elem = self.driver.find_element(By.ID, self.email_textbox_id)
-        elem.clear()
-        elem.send_keys(email)
+        self.driver.find_element(By.ID, self.email_textbox_id).send_keys(email)
 
     def click_send(self):
-        elem = self.driver.find_element(By.NAME, self.send_button_name)
-        elem.click()        
+        self.driver.find_element(By.NAME, self.send_button_name).click()        
 
     def click_sign_up(self):
-        elem = self.driver.find_element(By.LINK_TEXT, self.sign_up_link_text)
-        elem.click()
+        self.driver.find_element(By.LINK_TEXT, self.sign_up_link_text).click()
 
     def click_missing_confirmation(self):
-        elem = self.driver.find_element(By.LINK_TEXT, self.missing_confirmation_link_text)
-        elem.click()
+        self.driver.find_element(By.LINK_TEXT, self.missing_confirmation_link_text).click()
 
     def read_error_message(self):
-        elem = self.driver.find_element(By.XPATH, self.error_message_label_xpath)
-        error_message = elem.text
-        return error_message
+        return self.driver.find_element(By.XPATH, self.error_message_label_xpath).text

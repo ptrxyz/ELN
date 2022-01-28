@@ -24,76 +24,55 @@ class TopFrame():
         self.logout_button_classname = "glyphicon-log-out"
 
     def enter_username(self, username):
-        elem = self.driver.find_element(By.NAME, self.username_textbox_name)
-        elem.clear()
-        elem.send_keys(username)
+        self.driver.find_element(By.NAME, self.username_textbox_name).send_keys(username)
 
     def enter_password(self, password):
-        elem = self.driver.find_element(By.NAME, self.password_textbox_name)
-        elem.clear()
-        elem.send_keys(password)
+        self.driver.find_element(By.NAME, self.password_textbox_name).send_keys(password)
 
     def click_login(self):
-        elem = self.driver.find_element(By.CLASS_NAME, self.login_button_class_name)
-        elem.click()
+        self.driver.find_element(By.CLASS_NAME, self.login_button_class_name).click()
 
     def press_return_login(self):
-        elem = self.driver.find_element(By.NAME, self.password_textbox_name)
-        elem.send_keys(Keys.RETURN)
+        self.driver.find_element(By.NAME, self.password_textbox_name).send_keys(Keys.RETURN)
 
     def click_chemotion_repository(self):
-        elem = self.driver.find_element(By.ID, self.dropdown_button_id)
-        elem.click()
-        elem = self.driver.find_element(By.XPATH, self.chemotion_repository_button_xpath)
-        elem.click()
+        self.driver.find_element(By.ID, self.dropdown_button_id).click()
+        self.driver.find_element(By.XPATH, self.chemotion_repository_button_xpath).click()
         self.driver.implicitly_wait(5)
 
     def click_complat(self):
-        elem = self.driver.find_element(By.ID, self.dropdown_button_id)
-        elem.click()
-        elem = self.driver.find_element(By.XPATH, self.complat_button_xpath)
-        elem.click()
+        self.driver.find_element(By.ID, self.dropdown_button_id).click()
+        self.driver.find_element(By.XPATH, self.complat_button_xpath).click()
         self.driver.implicitly_wait(5)
 
     def click_complat_on_github(self):
-        elem = self.driver.find_element(By.ID, self.dropdown_button_id)
-        elem.click()
-        elem = self.driver.find_element(By.XPATH, self.complat_on_github_button_xpath)
-        elem.click()
+        self.driver.find_element(By.ID, self.dropdown_button_id).click()
+        self.driver.find_element(By.XPATH, self.complat_on_github_button_xpath).click()
         self.driver.implicitly_wait(5)
 
     def click_eln(self):
-        elem = self.driver.find_element(By.ID, self.dropdown_button_id)
-        elem.click()
-        elem = self.driver.find_element(By.XPATH, self.eln_button_xpath)
-        elem.click()
+        self.driver.find_element(By.ID, self.dropdown_button_id).click()
+        self.driver.find_element(By.XPATH, self.eln_button_xpath).click()
         self.driver.implicitly_wait(5)
 
     def click_about(self):
-        elem = self.driver.find_element(By.ID, self.dropdown_button_id)
-        elem.click()
-        elem = self.driver.find_element(By.XPATH, self.about_button_xpath)
-        elem.click()
+        self.driver.find_element(By.ID, self.dropdown_button_id).click()
+        self.driver.find_element(By.XPATH, self.about_button_xpath).click()
         self.driver.implicitly_wait(5)
 
     def click_signup(self):
-        elem = self.driver.find_element(By.XPATH, self.signup_button_xpath)
-        elem.click()
+        self.driver.find_element(By.XPATH, self.signup_button_xpath).click()
         self.driver.implicitly_wait(5)
 
     def click_edit(self):
-        elem = self.driver.find_element(By.CLASS_NAME, self.edit_button_classname)
-        elem.click()
+        self.driver.find_element(By.CLASS_NAME, self.edit_button_classname).click()
 
     def click_edit_close(self):
-        elem = self.driver.find_element(By.CLASS_NAME, self.close_button_classname)
-        elem.click()
+        self.driver.find_element(By.CLASS_NAME, self.close_button_classname).click()
 
     def click_edit_cancel(self):
-        elem = self.driver.find_element(By.CLASS_NAME, self.cancel_button_classname)
-        elem.click()
+        self.driver.find_element(By.CLASS_NAME, self.cancel_button_classname).click()
 
     def click_logout(self):
-        elem = self.driver.find_element(By.CLASS_NAME, self.logout_button_classname)
         time.sleep(1)
-        elem.click()
+        self.driver.find_element(By.CLASS_NAME, self.logout_button_classname).click()
