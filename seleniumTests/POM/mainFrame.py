@@ -1,6 +1,6 @@
 from selenium.webdriver.common.by import By
 from seleniumTests.POM.locators import MainFrameLocators as MFL
-
+import time
 class MainFrame():
 
     def __init__(self, driver):
@@ -21,7 +21,7 @@ class MainFrame():
 
     def click_export(self):
         self.driver.find_element(By.ID, MFL.export_dropdown_button_id).click()
-        self.driver.find_element(By.XPATH, MFL.export_button_xpath).click()
+        self.driver.find_element(By.XPATH, MFL.export_button_xpath).click() 
 
     def click_export_checkbox(self):
         self.driver.find_element(By.XPATH, MFL.export_checkbox_xpath).click()
@@ -97,3 +97,19 @@ class MainFrame():
 
     def get_melting_temperature(self):
         return self.driver.find_element(By.XPATH, MFL.sample_melting_temperature_textbox_xpath).get_attribute("value")
+
+    
+    def get_iupac(self):
+        elem = self.driver.find_element(By.XPATH, MFL.sample_iupac_xpath)
+
+    def change_stereo_abs_value(self, value):
+        elem = self.driver.find_element(By.XPATH, MFL.stereo_abs_div_xpath).click()
+        elem = self.driver.find_element(By.XPATH, MFL.stereo_abs_xpath + value + '"]').click()    
+
+    def save_sample_btn(self):
+        elem = self.driver.find_element(By.XPATH, MFL.save_sample_xpath).click()
+    
+    def get_iupac_span(self):
+        return self.driver.find_element(By.XPATH, MFL.iupac_span).text
+    
+    
