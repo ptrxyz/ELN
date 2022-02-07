@@ -46,15 +46,17 @@ class MainFrameLocators(object):
     sample_close_button_classname = "fa.fa-times"
     sample_edit_molecule_button_xpath = '//*[@id="SampleDetailsXTab-pane-properties"]/span[1]/div/table/tbody/tr[1]/td/div/div[1]/div[1]/span/span/button'
     sample_name_textbox_id = "txinput_name"
-    sample_save_button_classname = "fa.fa-floppy-o"    
+    sample_save_button_classname = "fa.fa-floppy-o"
     sample_name_label_xpath = '//*[@id="tabList-pane-0"]/div/div[2]/table/tbody[1]/tr[2]/td[2]/span/span[2]'
     sample_boiling_temperature_textbox_xpath = '//*[@id="SampleDetailsXTab-pane-properties"]/span[1]/div/table/tbody/tr[2]/td/div/div[3]/div/span/input'
     sample_melting_temperature_textbox_xpath = '//*[@id="SampleDetailsXTab-pane-properties"]/span[1]/div/table/tbody/tr[2]/td/div/div[4]/div/span/input'
     
     save_sample_xpath = '//*[@id="elements-tabs-pane-0"]/div/div[1]/div/button[2]'
-    sample_iupac_xpath = '//*[@id="elements-tabs-pane-0"]/div/div[2]/div[1]/div[1]/h4/div/p[1]/span/span/text()[6]'                         
-    stereo_abs_div_xpath = '//*[@id="react-select-3--value"]/div[1]'    
+    sample_iupac_xpath = '//*[@id="elements-tabs-pane-0"]/div/div[2]/div[1]/div[1]/h4/div/p[1]/span/span/text()[6]'
+    stereo_abs_div_xpath = '//*[@id="react-select-3--value"]/div[1]'
+    stereo_rel_div_xpath = '//*[@id="react-select-4--value"]/div[1]'
     stereo_abs_xpath = '//*[@id="react-select-3--option-'
+    stereo_rel_xpath = '//*[@id="react-select-4--option-'
     iupac_span = '//*[@id="elements-tabs-pane-0"]/div/div[2]/div[1]/div[1]/h4/div/p[1]/span/span'
     
 class PasswordNewPageLocators(object):

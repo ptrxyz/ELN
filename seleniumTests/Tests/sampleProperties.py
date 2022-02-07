@@ -55,6 +55,34 @@ class LoginTest(unittest.TestCase):
             except NoSuchElementException:
                 continue
         assert '(S)' in home_page.get_iupac_span()
+    
+    def test_0002_Stereo_rel_values_reflection(self):
+        home_page = MainFrame(self.driver)
+        home_page.click_properties_tab()
+
+        try:
+            home_page.change_stereo_rel_value(str(2))
+            home_page.save_sample_btn()
+        except:
+            home_page.change_stereo_rel_value(str(1))
+            home_page.save_sample_btn()
+        time.sleep(3)
+        ''' 
+            Stereo Abs drop down menu items
+            {
+                0:'any', 1:'sync', 2:'anti', 3:'p-geminal', 4:'p-ortho', 
+                5:'p-meta', 6:'p-para', 7:'cis', 8:'trans', 9:'fac', 10:'mer' 
+            }
+        '''        
+        for value in range(3):
+            home_page.change_stereo_rel_value(str(value+1)) # ignore '0:any' case
+            time.sleep(1)
+            try:
+                home_page.save_sample_btn()
+                time.sleep(1)
+            except NoSuchElementException:
+                continue
+        assert "p-geminal" in home_page.get_iupac_span()
 
     @classmethod
     def tearDown(cls):

@@ -104,7 +104,11 @@ class MainFrame():
 
     def change_stereo_abs_value(self, value):
         elem = self.driver.find_element(By.XPATH, MFL.stereo_abs_div_xpath).click()
-        elem = self.driver.find_element(By.XPATH, MFL.stereo_abs_xpath + value + '"]').click()    
+        elem = self.driver.find_element(By.XPATH, MFL.stereo_abs_xpath + value + '"]').click()
+
+    def change_stereo_rel_value(self, value):
+        elem = self.driver.find_element(By.XPATH, MFL.stereo_rel_div_xpath).click()
+        elem = self.driver.find_element(By.XPATH, MFL.stereo_rel_xpath + value + '"]').click()    
 
     def save_sample_btn(self):
         elem = self.driver.find_element(By.XPATH, MFL.save_sample_xpath).click()
