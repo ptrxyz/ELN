@@ -41,7 +41,7 @@ class LoginTest(unittest.TestCase):
         top_frame = TopFrame(self.driver)
         top_frame.enter_username(self.invalid_username)
         top_frame.enter_password(self.invalid_password)
-        top_frame.click_login()        
+        top_frame.click_login()
         
     def test_0000_about_click(self):
         top_frame = TopFrame(self.driver)

@@ -30,11 +30,12 @@ class LoginTest(unittest.TestCase):
         home_page = MainFrame(cls.driver)
         home_page.click_my_data_button()
         home_page.click_sample_link()
-
+    
     def test_0000_analyses_tab_in_sample(self):
         home_page = MainFrame(self.driver)
         home_page.click_analyses_tab()
-
+        
+        
     def test_0001_open_spectra_in_sample(self):
         home_page = MainFrame(self.driver)
         home_page.click_analyses_tab()
@@ -75,7 +76,7 @@ class LoginTest(unittest.TestCase):
         home_page.enter_sample_name("TestSampleName" + time_string)
         home_page.save_sample()
         time.sleep(2)
-        assert time_string in home_page.get_sample_name_from_label()
+        assert time_string in home_page.get_sample_name_from_label()    
 
     def test_0008_enter_temperatures_in_sample(self):
         home_page = MainFrame(self.driver)

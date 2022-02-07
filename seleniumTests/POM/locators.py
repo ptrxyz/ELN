@@ -11,7 +11,7 @@ class AdminPageLocators(object):
     firstname_textbox_id = "formControlFirstName"
     lastname_textbox_id = "formControlLastName"
     abbreviation_textbox_id = "formControlAbbr"
-    create_button_old_xpath = "/html/body/div[2]/div[2]/div/div/div[2]/div/form/div[9]/div/button[1]"                               
+    create_button_old_xpath = "/html/body/div[2]/div[2]/div/div/div[2]/div/form/div[9]/div/button[1]"
     create_button_xpath = '//*[@id="createUserTabs-pane-singleUser"]/form/div[8]/div/button'
     close_button_classname = "close"
 
@@ -46,11 +46,17 @@ class MainFrameLocators(object):
     sample_close_button_classname = "fa.fa-times"
     sample_edit_molecule_button_xpath = '//*[@id="SampleDetailsXTab-pane-properties"]/span[1]/div/table/tbody/tr[1]/td/div/div[1]/div[1]/span/span/button'
     sample_name_textbox_id = "txinput_name"
-    sample_save_button_classname = "fa.fa-floppy-o"
+    sample_save_button_classname = "fa.fa-floppy-o"    
     sample_name_label_xpath = '//*[@id="tabList-pane-0"]/div/div[2]/table/tbody[1]/tr[2]/td[2]/span/span[2]'
     sample_boiling_temperature_textbox_xpath = '//*[@id="SampleDetailsXTab-pane-properties"]/span[1]/div/table/tbody/tr[2]/td/div/div[3]/div/span/input'
     sample_melting_temperature_textbox_xpath = '//*[@id="SampleDetailsXTab-pane-properties"]/span[1]/div/table/tbody/tr[2]/td/div/div[4]/div/span/input'
-
+    
+    save_sample_xpath = '//*[@id="elements-tabs-pane-0"]/div/div[1]/div/button[2]'
+    sample_iupac_xpath = '//*[@id="elements-tabs-pane-0"]/div/div[2]/div[1]/div[1]/h4/div/p[1]/span/span/text()[6]'                         
+    stereo_abs_div_xpath = '//*[@id="react-select-3--value"]/div[1]'    
+    stereo_abs_xpath = '//*[@id="react-select-3--option-'
+    iupac_span = '//*[@id="elements-tabs-pane-0"]/div/div[2]/div[1]/div[1]/h4/div/p[1]/span/span'
+    
 class PasswordNewPageLocators(object):
     log_in_link_text = "Log in"
     sign_up_link_text = "Sign up"
@@ -81,7 +87,7 @@ class TopFrameLocators(object):
     eln_button_xpath                  = '//*[@id="Home"]/div/div/div[1]/nav/div/div[1]/li/ul/li[5]/a'
     about_button_xpath                = '//*[@id="Home"]/div/div/div[1]/nav/div/div[1]/li/ul/li[7]/a'
     signup_button_xpath               = '//*[@id="Home"]/div/div/div[1]/nav/div/div[2]/ul/li/a'
-    edit_button_classname = "btn-primary"
-    close_button_classname = "close"
-    cancel_button_classname = "btn-warning"
+    edit_button_classname = "btn-primary"   #rename suggestion: structure_edit_btn
+    close_button_classname = "close"        #rename suggestion: structure_edit_close_btn
+    cancel_button_classname = "btn-warning" #rename suggestion: structure_edit_cancel_btn
     logout_button_classname = "glyphicon-log-out"
