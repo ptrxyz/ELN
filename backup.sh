@@ -2,7 +2,7 @@
 
 read -e -p "
 Stop a running ELN docker-container setup ? [yes/N] " YN
-[[ $YN == "yes" ]] && docker-compose down
+[[ $YN == "yes" ]] && docker-compose down --remove-orphans
 
 echo "Looking for folders [ config shared db-data ] ..."
 

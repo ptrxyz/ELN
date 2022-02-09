@@ -11,7 +11,7 @@ checkFolderExists(){
 }
 
 checkSymlinkExists(){
-    if [[ ! -d $1 ]]; then
+    if [[ ! -L $1 ]]; then
         echo "    Symlink $1 does not exist. Please create it."
         return 1
     else
@@ -60,7 +60,7 @@ if ! checkSymlinkExists "/chemotion/app/log"                      ; then exit 1;
 if ! checkSymlinkExists "/chemotion/app/tmp"                      ; then exit 1; fi
 if ! checkSymlinkExists "/chemotion/app/uploads"                  ; then exit 1; fi
 if ! checkSymlinkExists "/chemotion/app/config/database.yml"      ; then exit 1; fi
-if ! checkSymlinkExists "/chemotion/app/config/datacollector.yml" ; then exit 1; fi
+if ! checkSymlinkExists "/chemotion/app/config/datacollectors.yml"; then exit 1; fi
 if ! checkSymlinkExists "/chemotion/app/config/editors.yml"       ; then exit 1; fi
 if ! checkSymlinkExists "/chemotion/app/config/secrets.yml"       ; then exit 1; fi
 if ! checkSymlinkExists "/chemotion/app/config/storage.yml"       ; then exit 1; fi
@@ -105,7 +105,7 @@ echo "    Evaluated configuration file: $db_configfile"
 echo "    Imported profile: $db_profile"
 echo "    Connecting to host: $DB_HOST ..."
 iterator=1
-while ! pg_isready -h $DB_HOST 1>/dev/null 2>&1; do
+while ! pg_isready -h $DB_HOST -U 'postgres' 1>/dev/null 2>&1; do
     ((iterator++))
     echo "    Database instance not ready. Waiting ..."
     sleep 10

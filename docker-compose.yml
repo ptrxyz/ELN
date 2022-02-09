@@ -3,31 +3,33 @@ services:
     db:
         image: 'postgres:13'
         restart: unless-stopped
-        volumes:
-            - ./db-data:/var/lib/postgresql/data
         environment:
             - POSTGRES_HOST_AUTH_METHOD=trust
             - POSTGRES_USER=postgres
-            - PSTGRES_PASSWORD=postgres
+            - POSTGRES_PASSWORD=postgres
+        volumes:
+            - ./db-data:/var/lib/postgresql/data/
+
+    worker:
+        image: 'chemotion-build:latest-eln'
+        restart: unless-stopped
+        command: ["starteln"]
+        environment:
+            - CONFIG_ROLE="worker"
+        depends_on:
+            - 'db'
+        volumes:
+            - ./shared:/shared
 
     eln:
         image: 'chemotion-build:latest-eln'
+        restart: unless-stopped
+        command: ["starteln"]
         depends_on:
-            - db
-        environment:
-            - THOR_SILENCE_DEPRECATION=1
-            - USERID=1000
-        command: ['starteln']
+            - 'db'
+        expose:
+            - '4000'
+        ports:
+            - 4000:4000
         volumes:
             - ./shared:/shared
-        #            - ./scripts:/etc/scripts
-        #        network_mode: service:db
-        ports:
-            - 3000:3000
-#        expose:
-#            - '4000'
-#            - '4001'
-
-# Persist database information after container is removed
-volumes:
-    db_data:

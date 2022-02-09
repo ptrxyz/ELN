@@ -10,7 +10,7 @@ checkFolderExists(){
 }
 
 checkSymlinkExists(){
-    if [[ ! -d $1 ]]; then
+    if [[ ! -L $1 ]]; then
         echo "    Symlink $1 does not exist. Please create it."
         return 1
     else
@@ -59,7 +59,7 @@ if ! checkSymlinkExists "/chemotion/app/log"                      ; then exit 1;
 if ! checkSymlinkExists "/chemotion/app/tmp"                      ; then exit 1; fi
 if ! checkSymlinkExists "/chemotion/app/uploads"                  ; then exit 1; fi
 if ! checkSymlinkExists "/chemotion/app/config/database.yml"      ; then exit 1; fi
-if ! checkSymlinkExists "/chemotion/app/config/datacollector.yml" ; then exit 1; fi
+if ! checkSymlinkExists "/chemotion/app/config/datacollectors.yml"; then exit 1; fi
 if ! checkSymlinkExists "/chemotion/app/config/editors.yml"       ; then exit 1; fi
 if ! checkSymlinkExists "/chemotion/app/config/secrets.yml"       ; then exit 1; fi
 if ! checkSymlinkExists "/chemotion/app/config/storage.yml"       ; then exit 1; fi
@@ -79,7 +79,7 @@ source <( python3 /etc/scripts/parseYML.py read --upper --prefix=DB_ $db_configf
 echo "    Evaluated configuration file: $db_configfile"
 echo "    Imported profile: $db_profile"
 echo "    Connecting to host: $DB_HOST ..."
-while ! pg_isready -h $DB_HOST 1>/dev/null 2>&1; do
+while ! pg_isready -h $DB_HOST -U 'postgres' 1>/dev/null 2>&1; do
     echo "    Database instance not ready. Waiting ..."
     sleep 10
 done
@@ -94,13 +94,44 @@ fi
 
 echo "    Database up and running."
 
-cd /chemotion/app/
-
-bundle exec rake db:migrate
-echo "    Database migrated."
-
-bundle exec rake assets:precompile
-
 cd /chemotion/app
-# bundle exec rails s
-exec passenger start -e production --engine=builtin --address 0.0.0.0 --port 3000
+
+for file in $(ls /shared/eln/config/); do
+    if [ -d /shared/eln/config/${file} ]; then
+        if ! [ -d config/${file} ]; then
+            mkdir -p config/${file}
+        fi
+        for file2 in $(ls /shared/eln/config/${file}); do
+            if [ -f config/${file}/${file2} ]; then
+                rm -f config/${file}/${file2}
+                ln -s /shared/eln/config/${file}/${file2} config/${file}/${file2}
+            fi
+            if ! [ -L config/${file}/${file2} ]; then
+                ln -s /shared/eln/config/${file}/${file2} config/${file}/${file2}
+            fi
+        done
+    else
+        if [ -f config/${file} ]; then
+            rm -f config/${file}
+            ln -s /shared/eln/config/${file} config/${file}
+        fi
+        if ! [ -L config/${file} ]; then
+            ln -s /shared/eln/config/${file} config/${file}
+        fi
+    fi
+done
+
+echo "Role: $CONFIG_ROLE"
+if [[ ${CONFIG_ROLE} == "eln" || ${CONFIG_ROLE} == "app" ]]; then 
+    bundle exec rake db:migrate
+    bundle exec rake assets:precompile
+
+    # start ketcher background service if present
+    if [ -f "/chemotion/app/lib/node_service/nodeService.js" ]; then
+        nohup node /chemotion/app/lib/node_service/nodeService.js production >> /chemotion/app/log/node.log 2>&1 &
+    fi
+
+    exec passenger start -e production --engine=builtin --address 0.0.0.0 --port ${CONFIG_PASSENGER_PORT} --disable-security-update-check
+else
+    exec bundle exec bin/delayed_job run
+fi

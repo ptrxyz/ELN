@@ -71,31 +71,16 @@ RUN yarn cache dir && \
     cd /chemotion/app && \
     yarn install --link-duplicates
 
-# # Should be unnecessary
-# RUN apt-get -y --autoremove --fix-missing install git vim
-# RUN cd /chemotion/app && bundle install --jobs=$(getconf _NPROCESSORS_ONLN)
-# RUN cd /chemotion/app && unset NODE_PATH && yarn install --production
-
 # check dependencies 
-# COPY ./lddcheck /bin/lddcheck
-# RUN find /ruby/lib/ruby/gems/ /node/lib/node_modules -iname '*.so' -type f -exec lddcheck \{\} \; | tee /lddlog.txt | grep not | grep -v libRD | sort | uniq
+COPY ./lddcheck /bin/lddcheck
+RUN find /ruby/lib/ruby/gems/ /node/lib/node_modules -iname '*.so' -type f -exec lddcheck \{\} \; | tee /lddlog.txt | grep not | grep -v libRD | sort | uniq
 
 # copy config template to image
 RUN mkdir -p /shared /template 
-# RUN for foldername in uploads log public config tmp; do echo "Exposing [${foldername}] ..."; \
-#     rm -r /chemotion/app/${foldername}; \
-#     ln -s /shared/eln/${foldername} /chemotion/app/${foldername}; \
-#     done
-
-# RUN for filename in .env; do echo "Exposing [${filename}] ..."; \
-#     folder=$(dirname ${filename}); \
-#     fname=$(basename ${filename}); \
-#     rm -r /chemotion/app/${filename}; \
-#     ln -s /shared/eln/${filename} /chemotion/app/${folder}/${fname}; \
-#     done
 
 # clean up some unnecessary files
-RUN find /template /chemotion/app -iname '*.gitlab' -print -delete -or -iname '*.travis' -print -delete
+# removed because https://github.com/ComPlat/chemotion_ELN/commit/ff21b426bed4f48d878931ae17ec495fc92fd00e caused error with find
+# RUN find /template /chemotion/app -iname '*.gitlab' -print -delete -or -iname '*.travis' -print -delete
 
 COPY ./defaultLandscape /template/defaultLandscape
 
@@ -105,40 +90,17 @@ RUN apt-get -y --autoremove --fix-missing install \
     python3-yaml \
     python3-psutil
 
-# RUN mkdir -p /etc/scripts
 COPY ./scripts /etc/scripts
+
+ENV THOR_SILENCE_DEPRECATION=1
+
+ENV CONFIG_USERID=1000
+ENV CONFIG_FIX_PERMISSIONS_ON_STARTUP=true
+ENV CONFIG_PASSENGER_PORT=4000
+ENV CONFIG_ROLE=eln
 
 # Lines needed to be compatible with docker 1.26+ versions of tini
 # as of Apr. 28, we use cmd.sh as init system.
 RUN ln -s /usr/bin/tini /tini
 RUN ln -s /etc/scripts/cmd.sh /init
 ENTRYPOINT ["/usr/bin/tini", "--", "/init"]
-
-
-#####
-
-# info: stats ausgeben
-# init: std config auf shared volume schreiben 
-# upgrade: ...
-# backup: backupen d. db, d. daten, d. config
-# start-eln:      started das eln
-# start-worker:   started den worker
-# user-shell:     drop to user shell
-# cmd | bash | shell | root-shell: drops to root shell
-
-
-
-###
-
-
-# config:
-#   if (1stStart) exposeConfigFiles(STD.CONF)
-#   if (followUpStart) pass
-#   if (upgrade) CheckConfigIfCompatible()
-
-# datenbank prüfen:
-#   while (tryToConnect(db) != true and fail < 10); sleep 10; fail++; done
-#   if (fail == 10) error "DB missing"
-
-# if (istELN) bundle exec rails ...
-# if (worker) bundle exec worker ...

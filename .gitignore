@@ -2,3 +2,5 @@ build.log
 setup.sh
 shared/
 src/
+geckodriver.log
+*.pyc
